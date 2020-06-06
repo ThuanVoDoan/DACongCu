@@ -1,0 +1,97 @@
+﻿@model DATH.Models.HoatDong
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/NguoidungLayout.cshtml";
+}
+
+@*<script src="//cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>*@
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/Content/ckfinder/ckfinder.js"></script>
+<hr />
+<h2 style="margin-left:20px">Tạo hoạt động</h2>
+
+<p style="margin-left:20px"><strong style="color:red">Lưu ý :</strong><strong> nhập thời gian như sau 31/03/2020 08:00 SA (SA:sáng CH:chiều)</strong></p>
+
+@using (Html.BeginForm("Index", "TaoHdBCS", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+
+    <div style="margin-left:20px">
+        <p><b>Thời gian bắt đầu</b></p>
+        @*<p>@Html.EditorFor(model => model.ThoiGianBD, new { htmlAttributes = new { @id = "tgbd", @class = "form-control" } })</p>*@
+        <input id="bd" type="datetime-local" name="ThoiGianBD" />
+        <p style="color:red">@ViewBag.message</p>
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Thời gian kết thúc</b></p>
+        <input id="kt" type="datetime-local" name="ThoiGianKT" />
+        <p style="color:red">@ViewBag.message</p>
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Hình ảnh</b></p>
+        <input type="file" id="fileUpload" name="fileUpload" />
+        @ViewBag.ThongBao
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Tên hoạt động</b></p>
+        <p id="thd" style="margin-left:13px">@Html.EditorFor(model => model.TenHoatDong)</p>
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Địa điểm</b></p>
+        <p class="form-control" style="margin-left:13px">@Html.EditorFor(model => model.Diadiem)</p>
+    </div>
+
+    <div style="margin-left:20px;margin-right:20px" id="b">
+        <p><b>Mô tả chính</b></p>
+        <p>@Html.TextAreaFor(model => model.MoTaChinh, new { @id = "editor2" })</p>
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Số lượng người được tham gia</b></p>
+        <p>@Html.EditorFor(model => model.GioiHanNguoiThamGia, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-left:20px;margin-bottom:20px">
+        <input style="cursor:pointer" id="btntao" type="submit" value="Tạo" />
+    </div>
+}
+<style>
+    #btntao:hover {
+        background-color: #0094ff;
+    }
+
+    #slider {
+        display: none;
+    }
+</style>
+
+<script type="text/javascript">
+    CKEDITOR.replace('editor2');
+    CKFinder.setupCKEditor(null, '/ckfinder');
+
+    $(function () {
+        $('#b').ckeditor({
+            toolbar: 'Full',
+            enterMode: CKEDITOR.ENTER_BR,
+            shiftEnterMode: CKEDITOR.ENTER_P
+        });
+    });
+
+    $("#btntao").click(function (e) {
+        if ($("#bd").val() > $("#kt").val()) {
+            alert("Ngày tháng không hợp lệ");
+            e.preventDefault();
+        } else {
+            alert("Thêm thành công");
+        }
+    });
+
+</script>
+
+
+
+

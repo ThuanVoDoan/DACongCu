@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @*Chèn link css dowload của template*@
+    <link href="~/Content/LayoutNguoidung/fonts.css" rel="stylesheet" />
+    <link href="~/Content/LayoutNguoidung/screen.css" rel="stylesheet" />
+    @*Chèn link css tự tạo*@
+    <link href="~/Content/LayoutNguoidung/NguoiDungCssLayOut.css" rel="stylesheet" />
+    <link href="~/Content/LayoutNguoidung/TrangChuCss.css" rel="stylesheet" />
+    @*Chèn link css font ký tự*@
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    @*Chèn link css,js trong thư mục NivoSlider (ảnh chuyển động)*@
+    <link href="~/NivoSlider/nivo-slider.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/NivoSlider/jquery.nivo.slider.js"></script>
+    <script src="~/NivoSlider/jquery.nivo.slider.pack.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        #NoiDung {
+            background-image: url('../../Content/TemplateAdmin/img/bg-login.jpg');
+            margin-bottom: -25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ToanTrang">
+        @*<section class="blank">*@
+
+        <div class="flash">
+            <div class="icDienThoai">
+                <div>
+                    <img src="~/images/HUTECH25.png" style="width:600px;height:100px" />
+                </div>
+            </div>
+            <div class="doitac">
+                <img src="~/images/doi-tac-hutech.jpg" style="width:300px;height:100px" />
+            </div>
+            <div id="map">
+            </div>
+        </div>
+        <hr />
+        <div id="menu">
+            <ul>
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#">Đăng nhập</a></li>
+                <li>
+                    <a href="#">Chức năng</a>
+                    <ul class="sub-menu">
+                        <li><a style="color:black" href="@Url.Action("Index","HDThamGia")">@Html.Action("DSHoatDongDangKy", "Login")</a></li>
+                        <li><a style="color:black" href="#" />@Html.Action("TaoHoatDong", "Login")</li>
+                        <li><a style="color:black" href="@Url.Action("Index","HDDaTaoBCS")">@Html.Action("DSHoatDongDatao", "Login")</a></li>
+                        <li><a style="color:black" href="@Url.Action("Index","HDChoChinhSuaBCS")">@Html.Action("DSHoatDongChinhSua", "Login")</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div id="slider" class="nivoSlider">
+            <img src="~/images/tnvcd.png" />
+        </div>
+        
+        <div>
+            @RenderBody()
+        </div>
+
+
+        <br />
+        <div style="clear:both">
+        </div>
+        @*div nhà xuất bản*@
+        <section style="margin-top:80px" class="blank items">
+            <div>
+                <a href="#" class="button button-buy">Cảm ơn vì đã sử dụng dịch vụ </a>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
+
+<style>
+    #menu{
+        margin-top:-15px;
+        padding:0
+    }
+
+    #menu ul{
+        background:#2968c1;
+        text-align:left;
+        overflow:hidden;
+    }
+
+    #menu ul li{
+        color:#f1f1f1;
+        display:inline-table;
+        width:120px;
+        height:40px;
+        line-height:40px;
+    }
+
+    #menu ul li a{
+        color:#f1f1f1;
+        text-decoration:none;
+        display:block;
+    }
+
+    #menu ul li a:hover{
+        background:#f1f1f1;
+        color:#333;
+    }
+
+    #menu ul li > .sub-menu{
+        width:150px;
+        height:150px;
+        display:none;
+        position:absolute;
+        
+    }
+
+    #menu ul li:hover .sub-menu{
+        display:block;
+        z-index:3;
+    }
+</style>

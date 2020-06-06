@@ -1,0 +1,58 @@
+﻿@using DATH.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<HoatDong>
+
+@{
+    ViewBag.Title = "Đại học Công Nghệ TP.HCM";
+    Layout = "~/Views/LayOut/NguoidungLayout.cshtml";
+}
+
+<div id="divBody">
+    <div id="hoatdong">Hoạt động</div>
+
+    <div style="margin-left:95px;margin-bottom:-25px;margin-top:20px">
+        @using (Html.BeginForm("KetQuaTimKiem", "TrangChu", FormMethod.Post))
+        {
+            @Html.TextBox("txtTimKiem", "", htmlAttributes: new { @class = "TextBoxTimKiem", @placeholder = "Nhập vào từ khóa cần tìm" })
+            <button id="timkiem" type="submit">
+                <i class="icon-search"></i>
+            </button>
+        }
+    </div>
+    
+    
+
+    <hr style="width:930px;margin-top:40px" />
+    @{ int i = 0;}
+    @{
+        foreach (var item in Model)
+        {
+            i++;
+            <a href=@Url.Action("XemChiTiet", "TrangChu", new { @HoatDong = item.IdHoatDong })>
+                <div id="SanPham">
+                    <img src="~/images/@item.HinhAnh" alt="Image">
+                    <div id="ThongTin">
+                        <div id="TenSach">@item.TenHoatDong</div>
+                        <div id="thoigian">@Html.DisplayFor(modelItem => item.ThoiGianBD) - @Html.DisplayFor(modelItem => item.ThoiGianKT)</div>
+                    </div>
+                </div>
+            </a>
+            if (i % 4 == 0)
+            {
+                <div style="clear:both"></div>
+            }
+        }
+    }
+    
+</div>
+<hr />
+<div id="trang">
+    <h3>Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount</h3>
+    <div class="sotrang">
+        @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page = Page }))
+    </div>
+</div>
+<div style="clear:both"></div>
+
+
+

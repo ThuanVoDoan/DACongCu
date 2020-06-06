@@ -1,0 +1,483 @@
+﻿@model IEnumerable<DATH.Models.NguoiDung>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2>Danh sách sinh viên lớp <strong style="cursor:pointer" onclick="EditSurvicecnl(@ViewBag.idlop)">@ViewBag.tenlop</strong> </h2>
+
+@using (Html.BeginForm("Index", "DsSinhvienTunglop", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <p>Nhập danh sách sinh viên</p>
+    <p style="color:red">@ViewBag.Error</p>
+    <input style="margin-top:-5px" type="file" name="excelfile" />
+    <input style="margin-top:5px" type="submit" value="Import" />
+    <p>@ViewBag.loi</p>
+}
+
+<p style="margin-top:30px">
+    <a style="cursor:pointer" onclick="Add()">Thêm mới</a>
+</p>
+<p hidden id="idl" name="idlop">@ViewBag.idlop</p>
+<!-- Exportable Table -->
+<div class="row clearfix" style="margin-top:30px">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2></h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    MSSV
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Ho_Ten)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SDT)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    MSSV
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Ho_Ten)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SDT)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @if (item.ChucVu.MoTa == "BCS")
+                                        {
+                                            <p>@Html.DisplayFor(modelItem => item.SoId) - <strong>@Html.DisplayFor(modelItem => item.ChucVu.TenChucVu)</strong></p>
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.SoId)
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Ho_Ten)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SDT)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Index", "DshdSinhvienDangky",new RouteValueDictionary(new { @id = item.IdInfo }))"><img src="https://img.icons8.com/dusk/64/000000/list.png" style="width:35px;height:35px"></a>
+                                        <a style="cursor:pointer" onclick="EditSurvice(@item.IdInfo)"><img src="https://img.icons8.com/plasticine/100/000000/edit.png" style="width:35px;height:35px"></a>
+                                        <a style="cursor:pointer" onclick="Delete(@item.IdInfo)"><img src="https://img.icons8.com/flat_round/64/000000/delete-sign.png" style="width:35px;height:35px"></a>
+                                        <a style="cursor:pointer;margin-left:5px" onclick="Deletemk(@item.IdInfo)">Reset mật khẩu</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+@*--Modal dialog--*@
+<div id="create-service-model" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật thông tin sinh viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">MSSV</label>
+                        <input type="text" class="form-control" name="MASO">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên sinh viên</label>
+                        <input type="text" class="form-control" name="NAME">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">SDT</label>
+                        <input type="text" class="form-control" name="SDT">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Lớp</label>
+                        @*<input type="text" class="form-control" name="LOP">*@
+                        <select>
+                            @foreach (var i in Model.ToList())
+                            {
+                                <option value="@i.IdLop">@i.Lop.TenLop</option>
+                            }
+                        </select>
+                        
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Chức vụ</label>
+                        @*<select name="NAME3" id="selectList">
+                            <option value="3">Ban cán sự</option>
+                            <option value="4">Sinh viên</option>
+                        </select>*@
+                        <select name="NAME3" id="selectList">
+                            <option id="a1"></option>
+                            <option id="a2"></option>
+                        </select>
+                        <input type="text" class="form-control" id="CV" name="CV">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model1" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn sẽ xóa sinh viên: <strong name="MASO"></strong> - <strong name="NAME"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteInfo()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model2" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm sinh viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">MSSV</label>
+                        <input type="text" class="form-control" name="MASO1">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên sinh viên</label>
+                        <input type="text" class="form-control" name="NAME1">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">SDT</label>
+                        <input type="text" class="form-control" name="SDT1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo1()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-modelcnl" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật lớp</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Tên lớp</label>
+                        <input type="text" class="form-control" name="NAMEcnl">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfocnl()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="create-service-model4" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn khôi phục mật khẩu mặc định cho sinh viên: <strong name="MASO4"></strong> - <strong name="NAME4"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteInfomk()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var Idsv = 0;
+
+    function Add() {
+        $('#create-service-model2').modal("show");
+    }
+
+    function SaveInfo1() {
+        var name = $("[name='NAME1']").val();
+        var maso = $("[name='MASO1']").val();
+        var sdt = $("[name='SDT1']").val();
+        var lop = $("#idl").text();
+
+        $.ajax({
+            url: '/DsSinhvienTunglop/Add' + pass,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdInfo: Idsv,
+                SoId: maso,
+                Ho_Ten: name,
+                SDT: sdt,
+                IdLop: lop,
+                TaiKhoan: maso,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function EditSurvice(id) {
+        Idsv = id;
+
+        $.ajax({
+            url: '/DsSinhvienTunglop/Get/' + Idsv,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idsv,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='NAME']").val(json.NAME);
+            $("[name='MASO']").val(json.MASO);
+            $("[name='SDT']").val(json.SDT);
+            $("[name='LOP']").val(json.LOP);
+            //$("[name='LOP']").val(json.SE);
+            $("[name='TAIKHOAN']").val(json.TAIKHOAN);
+            $("[name='CV']").val(json.CV);
+            if( json.CV == 3 ){
+                $("#a1").text("Ban cán sự");
+                $("#a2").text("Sinh viên");
+                $("#a1").val("3");
+                $("#a2").val("4");
+            }
+            else if( json.CV == 4 ){
+                $("#a2").text("Ban cán sự");
+                $("#a1").text("Sinh viên");
+                $("#a2").val("3");
+                $("#a1").val("4");
+            }
+            $('#selectList').change(function(){
+                var y = $('#selectList').val();
+                $("#CV").val(y)
+            });
+            $("#CV").hide();
+            $('#create-service-model').modal("show");
+        });
+    }
+
+    function SaveInfo() {
+        var name = $("[name='NAME']").val();
+        var maso = $("[name='MASO']").val();
+        var sdt = $("[name='SDT']").val();
+        var lop = $("[name='LOP']").val();
+        var taikhoan = $("[name='TAIKHOAN']").val();
+        var cv = $("[name='CV']").val();
+        var pass = "";
+        $.ajax({
+            url: '/DsSinhvienTunglop/Edit' + pass,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdInfo: Idsv,
+                SoId: maso,
+                Ho_Ten: name,
+                SDT: sdt,
+                IdChucVu : cv,
+                TaiKhoan: taikhoan,
+                IdLop:lop,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function DeleteInfo() {
+        $.ajax({
+            url: '/DsSinhvienTunglop/Delete',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdInfo: Idsv
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delete(id) {
+        Idsv = id;
+
+        $.ajax({
+            url: '/DsSinhvienTunglop/Get/' + Idsv,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idsv,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='MASO']").text(json.MASO);
+            $("[name='NAME']").text(json.NAME);
+            $('#create-service-model1').modal("show");
+        });
+    }
+
+    function SaveInfocnl() {
+        var name = $("[name='NAMEcnl']").val();
+        $.ajax({
+            url: '/QuanlyLop/EditLop',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdLop: Idlop,
+                TenLop: name
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function EditSurvicecnl(id) {
+        Idlop = id;
+
+        $.ajax({
+            url: '/QuanlyLop/GetLop/' + Idlop,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idlop,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='NAMEcnl']").val(json.NAME);
+            $('#create-service-modelcnl').modal("show");
+        });
+    }
+    
+    function Deletemk(id) {
+        Idsv = id;
+
+        $.ajax({
+            url: '/DsSinhvienTunglop/Get/' + Idsv,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idsv,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='MASO4']").text(json.MASO);
+            $("[name='NAME4']").text(json.NAME);
+            $('#create-service-model4').modal("show");
+        });
+    }
+    function DeleteInfomk() {
+        $.ajax({
+            url: '/QuanlyQuantri/ResetMk',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdInfo: Idsv
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Khôi phục mật khẩu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+</script>
+
+

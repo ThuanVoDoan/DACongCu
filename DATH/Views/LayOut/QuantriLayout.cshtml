@@ -1,0 +1,280 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>HUTECH-Đại Học Công Nghệ TP.HCM</title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    @*Chèn link css font ký tự*@
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="~/Content/LayoutQuantri/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+    <!-- Waves Effect Css -->
+    <link href="~/Content/LayoutQuantri/plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="~/Content/LayoutQuantri/plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- JQuery DataTable Css -->
+    <link href="~/Content/LayoutQuantri/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" />
+   
+     <!-- Morris Chart Css-->
+    <link href="~/Content/LayoutQuantri/plugins/morrisjs/morris.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="~/Content/LayoutQuantri/css/style.css" rel="stylesheet" />
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="~/Content/LayoutQuantri/css/themes/all-themes.css" rel="stylesheet" />
+
+</head>
+
+<body class="theme-red">
+    
+    
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <img src="~/images/HUTECH25.png" style="width:290px;height:50px;margin-top:5px;margin-left:480px" />
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="image">
+                    <img src="~/Content/user.png" width="48" height="48" alt="User" />
+                </div>
+                <div class="info-container">
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Html.Action("HienThiTenSinhVienPartial", "Login")</div>
+                    <div class="email"><b>Chức vụ</b> : @Html.Action("HienThiChucVuPartial","Login")</div>
+                    <div class="btn-group user-helper-dropdown">
+                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Thông tin</a></li>
+                            <li><a href="@Url.Action("Index","Login")"><i class="material-icons">input</i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">Quản lý</li>
+                    <li>
+                        <a href="@Url.Action("Index","TrangChuQt")">
+                            <i class="material-icons">home</i>
+                            <span>Hoạt động</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyQuantri")">
+                            <i class="material-icons">text_fields</i>
+                            <span>Quản trị viên</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyLop")">
+                            <i class="material-icons">layers</i>
+                            <span>Lớp</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyChucvu")">
+                            <i class="material-icons">widgets</i>
+                            <span>Chức vụ</span>
+                        </a>
+                        @*<ul class="ml-menu">
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    <span>Cards</span>
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="pages/widgets/cards/basic.html">Basic</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages/widgets/cards/colored.html">Colored</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages/widgets/cards/no-header.html">No Header</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    <span>Infobox</span>
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="pages/widgets/infobox/infobox-1.html">Infobox-1</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages/widgets/infobox/infobox-2.html">Infobox-2</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages/widgets/infobox/infobox-3.html">Infobox-3</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages/widgets/infobox/infobox-4.html">Infobox-4</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages/widgets/infobox/infobox-5.html">Infobox-5</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>*@
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyDonvitochuc")">
+                            <i class="material-icons">swap_calls</i>
+                            <span>Đơn vị tổ chức</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyGiaycn")">
+                            <i class="material-icons">pie_chart</i>
+                            <span>Giấy chứng nhận</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyQuyen")">
+                            <i class="material-icons">pie_chart</i>
+                            <span>Quyền</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyPhanQuyen")">
+                            <i class="material-icons">map</i>
+                            <span>Phân quyền</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","QuanlyQuyen_Phanquyen")">
+                            <i class="material-icons">map</i>
+                            <span>Quyền - phân quyền</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Background","TrangChu")">
+                            <i class="material-icons">map</i>
+                            <span>Background</span>
+                        </a>
+                    </li>
+                    <li class="header">Thống kê theo tính chất</li>
+                    <li>
+                        <a href="@Url.Action("Hoatdongdaduyet","TrangChuQt")">
+                            <i class="material-icons col-light-blue">donut_large</i>
+                            <span>Hoạt động đã duyệt</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Hoatdongchuaduyet","TrangChuQt")">
+                            <i class="material-icons col-orange">donut_large</i>
+                            <span>Hoạt động chưa xem</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Hoatdongchochinhsua","TrangChuQt")">
+                            <i class="material-icons col-green">donut_large</i>
+                            <span>Hoạt động chờ chỉnh sửa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Hoatdongdahuy","TrangChuQt")">
+                            <i class="material-icons col-red">donut_large</i>
+                            <span>Hoạt động đã hủy</span>
+                        </a>
+                    </li>
+                    <li class="header">Thống kê theo thời gian</li>
+                    <li>
+                        <a href="@Url.Action("Hoatdongchuadienra","TrangChuQt")">
+                            <i class="material-icons col-light-blue">donut_large</i>
+                            <span>Hoạt động sắp diễn ra</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Hoatdongdangdienra","TrangChuQt")">
+                            <i class="material-icons col-light-blue">donut_large</i>
+                            <span>Hoạt động đang diễn ra</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Hoatdongdaketthuc","TrangChuQt")">
+                            <i class="material-icons col-red">donut_large</i>
+                            <span>Hoạt động đã kết thúc</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </section>
+
+            <!-- Jquery Core Js -->
+            <script src="~/Content/LayoutQuantri/plugins/jquery/jquery.min.js"></script>
+
+            <!-- Bootstrap Core Js -->
+            <script src="~/Content/LayoutQuantri/plugins/bootstrap/js/bootstrap.js"></script>
+
+            <!-- Select Plugin Js -->
+            <script src="~/Content/LayoutQuantri/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+            <!-- Slimscroll Plugin Js -->
+            <script src="~/Content/LayoutQuantri/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+            <!-- Waves Effect Plugin Js -->
+            <script src="~/Content/LayoutQuantri/plugins/node-waves/waves.js"></script>
+
+            <!-- Jquery CountTo Plugin Js -->
+            <script src="~/Content/LayoutQuantri/plugins/jquery-countto/jquery.countTo.js"></script>
+
+            <!-- Morris Plugin Js -->
+            <script src="~/Content/LayoutQuantri/plugins/raphael/raphael.min.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/morrisjs/morris.js"></script>
+
+            <!-- ChartJs -->
+            <script src="~/Content/LayoutQuantri/plugins/chartjs/Chart.bundle.js"></script>
+
+            <!-- Sparkline Chart Plugin Js -->
+            <script src="~/Content/LayoutQuantri/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+            <!-- Custom Js -->
+            <script src="~/Content/LayoutQuantri/js/admin.js"></script>
+            <script src="~/Content/LayoutQuantri/js/pages/tables/jquery-datatable.js"></script>
+            <script src="~/Content/LayoutQuantri/js/pages/widgets/infobox/infobox-3.js"></script>
+            <!-- Demo Js -->
+            <script src="~/Content/LayoutQuantri/js/demo.js"></script>
+            <!-- Jquery DataTable Plugin Js -->
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/jquery.dataTables.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+            <script src="~/Content/LayoutQuantri/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+            
+</body>
+
+</html>

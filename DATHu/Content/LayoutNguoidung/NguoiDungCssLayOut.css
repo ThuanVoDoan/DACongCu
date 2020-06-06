@@ -1,0 +1,133 @@
+﻿/*Sử dụng độ rộng toàn trang id="ToanTrang"*/
+div#ToanTrang{
+    margin-left:50px;
+    margin-right:50px;
+    background-color:#fff;
+    font-family:'Segoe UI';
+}
+
+/*Thiết kế link đăng kí đăng nhập class="DangKiDangNhap"*/
+.DangKyDangNhap{
+    float:right;
+    margin-top:-50px;/*Làm cho chữ đi lên*/
+    padding-bottom:15px;
+}
+
+.DangKyDangNhap a{
+    padding-right:15px
+}
+
+.DangKyDangNhap a:hover{
+    text-decoration:none;
+    color:red;/*Làm cho chữ đổi màu khi rê chuột vào*/
+}
+
+/*Thiết kế div icDienThoai*/
+.icDienThoai{
+   float:left;
+   margin-left:10px
+}
+.doitac{
+   float:right;
+}
+
+/*Thiết kế cho menu trong header */
+.navMenu{
+    float:left;/*Nằm phía bên phải*/
+    margin-right:10%;
+}
+/*Thiết kế cho chữ (<li>) trong header */
+.navMenu li{
+    display:inline;/*Thiết kế cho chữ (<li>) nằm trên 1 dòng trong header */
+    border-right:solid 1px rgba(0,0,0,.1);/*Border (ô) xung quanh chữ (Đường phân cách giữa các ô chữ)*/
+    padding:40px;/*Cho (Đường phân cách giữa các ô chữ) dài ra*/
+    padding-top:19px;/*Thiết kế cho chữ (<li>) nhích lên trong header */
+    padding-bottom:22px;/*Thiết kế cho chữ (<li>) nhích xuống trong header */
+    -webkit-transition:all .5s ease-out;/*Thay đổi màu chậm (thuộc tính của css3)*/ /*Phần -webkit- có thể thay đổi tùy vào từng trình duyệt*/
+    -moz-transition:all .5s ease-out;
+}
+
+.navMenu li:hover{
+   background-color:rgba(0,0,0,.5);/*Thiết kế cho hiệu ứng chữ (<li>) đổi màu khi rê chuột vào trong header */
+   -webkit-transition:all .5s ease-out;
+   -moz-transition:all .5s ease-out;
+}
+
+.navMenu a:hover{
+    text-decoration:none;/*làm mất đi gạch chân của chữ */
+}
+
+#divDanhMuc{
+    height:30px;/*Làm cho id="divDanhMuc" rộng ra"*/
+}
+
+#txtTimKiem{
+    margin-top:0px;
+    margin-left:68px
+}
+
+#txtTimKiem input{
+   height:0; /*Chỉnh độ rộng của text box */  
+}
+
+.icon-search{
+    margin-left:-4px
+}
+
+#timkiem{
+    margin-left:-35px;padding:0 10px 0 10px;font-size:20px;width:30px;height:35px;background-color:#808080
+}
+
+#timkiem:hover{
+    color:aqua
+}
+
+#divHinhAnhTimKiem img{
+  width:40px;
+  height:30px;
+}
+
+/*thiết kế cho nivo slider*/
+div#slider{
+    width:1255px;
+    height:400px;
+}
+
+/*Căn chỉnh hình ảnh đều nhau*/
+div#slider img{
+    width:99.5%;
+    height:460px;
+    object-fit:fill;
+}
+
+/*Thiết kế cho menu trái dưới thanh tìm kiếm */
+div#divMenuLeft{
+    float:left;
+}
+
+/*thiết kế div menu nhà xuất bản */
+#divNxbLeft{
+    float:left;
+    width:250px;
+}
+
+#divNxbLeft .item{
+    width:100%
+}
+
+/*thiết kế cho menu kế bên menu nhà xuất bản */
+#divNextNxbRight{
+    float:right;
+    width:70%;
+     
+}
+
+#DNFace{
+    margin-left:1100px;
+    margin-top:30px
+}
+
+#map{
+    margin-left:10px;
+    margin-top:40px
+}

@@ -1,0 +1,85 @@
+﻿@model DATH.Models.HoatDong
+
+@{
+    ViewBag.Title = "ThemMoi";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/Content/ckfinder/ckfinder.js"></script>
+<h2>Thêm hoạt động</h2>
+<p style="font-size:11px">Quản lý hoạt động/Thêm mới</p>
+
+@using (Html.BeginForm("ThemMoi", "TrangChuQt", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <div style="margin-top:10px">
+        <p><b>Thời gian bắt đầu</b></p>
+        @Html.TextBoxFor(m => m.ThoiGianBD, "{0:dd-MM-yyyy HH:mm:ss}", new { @class = "form-control", @id = "bd", type = "datetime-local" })
+    </div>
+
+    <div style="margin-top:10px">
+        <p><b>Thời gian kết thúc</b></p>
+        @Html.TextBoxFor(m => m.ThoiGianKT, "{0:yyyy-MM-dd HH:mm:ss}", new { @class = "form-control", @id = "kt", type = "datetime-local" })
+    </div>
+
+    <div>
+        <p><b>Hình ảnh</b></p>
+        <input type="file" id="fileUpload" name="fileUpload" />
+        @ViewBag.ThongBao
+    </div>
+
+    <div style="margin-top:10px">
+        <p><b>Tên hoạt động</b></p>
+        <p>@Html.EditorFor(model => model.TenHoatDong, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p><b>Địa điểm</b></p>
+        <p>@Html.EditorFor(model => model.Diadiem, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px" id="b">
+        <p><b>Mô tả chính</b></p>
+        <p>@Html.TextAreaFor(model => model.MoTaChinh, new { @id = "editor2" })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p><b>Số lượng người được tham gia</b></p>
+        <p>@Html.EditorFor(model => model.GioiHanNguoiThamGia, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p><b>Đơn vị tổ chức</b></p>
+        <p>@Html.DropDownList("IdDonViToChuc")</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <input id="btntao" type="submit" value="Tạo" />
+    </div>
+}
+<style>
+    #btntao:hover {
+        background-color: #0094ff;
+    }
+</style>
+<script>
+    CKEDITOR.replace('editor2');
+    CKFinder.setupCKEditor(null, '/ckfinder');
+
+    $(function () {
+        $('#b').ckeditor({
+            toolbar: 'Full',
+            enterMode: CKEDITOR.ENTER_BR,
+            shiftEnterMode: CKEDITOR.ENTER_P
+        });
+    });
+
+    $("#btntao").click(function (e) {
+        if ($("#bd").val() > $("#kt").val()) {
+            alert("Ngày tháng không hợp lệ");
+            e.preventDefault();
+        } else {
+            alert("Thêm thành công");
+        }
+    });
+</script>

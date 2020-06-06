@@ -1,0 +1,93 @@
+﻿@model DATH.Models.HoatDong
+
+@{
+    ViewBag.Title = "ChinhSua";
+    Layout = "~/Views/LayOut/NguoidungLayout.cshtml";
+}
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/Content/ckfinder/ckfinder.js"></script>
+<hr />
+<h2 style="margin-left:20px">Chỉnh sửa hoạt động</h2>
+
+@using (Html.BeginForm("ChinhSua", "HDChoChinhSuaBCS", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.IdHoatDong)
+
+    <div style="margin-left:20px">
+        <p><b><strong style="color:red">Nội dung cần chỉnh sửa:</strong></b> <strong>@Html.Raw(Model.NoiDungChinhSua)</strong></p>
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Thời gian bắt đầu</b></p>
+        @Html.TextBoxFor(m => m.ThoiGianBD, "{0:yyyy-MM-ddTHH:mm:ss}", new { @class = "form-control", @id = "bd", type = "datetime-local" })
+        
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Thời gian kết thúc</b></p>
+        @Html.TextBoxFor(m => m.ThoiGianKT, "{0:yyyy-MM-ddTHH:mm:ss}", new { @class = "form-control", @id = "kt", type = "datetime-local" })
+        
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Hình ảnh</b></p>
+        <input type="file" id="fileUpload" name="fileUpload" />
+        @ViewBag.ThongBao
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Tên hoạt động</b></p>
+        <p id="thd" style="margin-left:13px">@Html.EditorFor(model => model.TenHoatDong)</p>
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Địa điểm</b></p>
+        <p class="form-control" style="margin-left:13px">@Html.EditorFor(model => model.Diadiem)</p>
+    </div>
+
+    <div style="margin-left:20px;margin-right:20px" id="b">
+        <p><b>Mô tả chính</b></p>
+        <p>@Html.TextAreaFor(model => model.MoTaChinh, new { @id = "editor2" })</p>
+    </div>
+
+    <div style="margin-left:20px">
+        <p><b>Số lượng người được tham gia</b></p>
+        <p>@Html.EditorFor(model => model.GioiHanNguoiThamGia, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-left:20px;margin-bottom:20px">
+        <input style="cursor:pointer" id="btntao" type="submit" value="Cập nhật" />
+    </div>
+}
+
+<style>
+    #btntao:hover {
+        background-color: #0094ff;
+    }
+
+    #slider {
+        display: none;
+    }
+</style>
+
+<script>
+    CKEDITOR.replace('editor2');
+    CKFinder.setupCKEditor(null, '/ckfinder');
+    $(function () {
+        $('#b').ckeditor({
+            toolbar: 'Full',
+            enterMode: CKEDITOR.ENTER_BR,
+            shiftEnterMode: CKEDITOR.ENTER_P
+        });
+    });
+
+    $("#btntao").click(function (e) {
+        if ($("#bd").val() > $("#kt").val()) {
+            alert("Ngày tháng không hợp lệ");
+            e.preventDefault();
+        } else {
+            alert("Cập nhật thành công");
+        }
+    });
+</script>
+

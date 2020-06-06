@@ -1,0 +1,375 @@
+﻿@model IEnumerable<DATH.Models.DangKiThamGiaHD>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2>Danh sách sinh viên tham gia hoạt động @ViewBag.tenhd</h2>
+<p hidden>@ViewBag.idhd</p>
+@if (ViewBag.tgbd > DateTime.Now)
+{
+
+    using (Html.BeginForm("Index", "DsSinhvienTheohd", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        <p>Nhập danh sách sinh viên tham gia</p>
+        <p style="color:red">@ViewBag.Error</p>
+        <input style="margin-top:-5px" type="file" name="excelfile" />
+        <input style="margin-top:5px" type="submit" value="Import" />
+    }
+}
+else if (ViewBag.tgbd < DateTime.Now && ViewBag.tgkt > DateTime.Now)
+{
+    using (Html.BeginForm("Index", "DsSinhvienTheohd", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        <p>Nhập danh sách sinh viên tham gia</p>
+        <p style="color:red">@ViewBag.Error</p>
+        <input style="margin-top:-5px" type="file" name="excelfile" />
+        <input style="margin-top:5px" type="submit" value="Import" />
+    }
+}
+
+
+@if (ViewBag.tgkt < DateTime.Now)
+{
+    if (ViewBag.bg == null)
+    {
+        using (Html.BeginForm("Index", "DsSinhvienTheohd", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+        {
+            <div>
+                <input type="file" id="fileUpload" name="fileUpload" />
+                <input style="margin-top:5px" type="submit" value="Thêm mẫu giấy chứng nhận" />
+            </div>
+        }
+    }
+    else if (ViewBag.bg != null)
+    {
+        using (Html.BeginForm("Index", "DsSinhvienTheohd", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+        {
+            <div>
+                <p>Đã có mẫu giấy chứng nhận</p>
+                <input type="file" id="fileUpload" name="fileUpload" />
+                <input style="margin-top:5px" type="submit" value="Đổi mẫu giấy chứng nhận" />
+            </div>
+        }
+    }
+}
+else
+{
+
+}
+
+@*<p style="margin-top:30px">
+        <a style="cursor:pointer" onclick="Add()">Thêm mới</a>
+    </p>*@
+
+<!-- Exportable Table -->
+<div class="row clearfix" style="margin-top:30px">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2></h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    MSSV
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NguoiDung.Ho_Ten) 
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NguoiDung.Lop.TenLop)
+                                </th>
+                                <th>
+                                    Điểm danh
+                                </th>
+                                <th>Chứng nhận</th>
+                                <th>
+                                    Lấy chứng nhận
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    MSSV
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NguoiDung.Ho_Ten)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NguoiDung.Lop.TenLop)
+                                </th>
+                                <th>
+                                    Điểm danh
+                                </th>
+                                <th>Chứng nhận</th>
+                                <th>
+                                    Lấy chứng nhận
+                                </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NguoiDung.SoId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NguoiDung.Ho_Ten)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NguoiDung.Lop.TenLop)
+                                    </td>
+                                    <td>
+                                        @if (item.TrangThai == true)
+                                        {
+                                            if (item.HoatDong.ThoiGianBD <= DateTime.Now && item.HoatDong.ThoiGianKT >= DateTime.Now)
+                                            {
+                                                <p style="cursor:pointer" onclick="Xacnhan(@item.IdDangKiHD)">@Html.CheckBox("t", true)</p>
+                                            }
+                                            else if (item.HoatDong.ThoiGianKT < DateTime.Now)
+                                            {
+                                                <p style="cursor:pointer">@Html.CheckBox("t", true)</p>
+                                            }
+                                            else
+                                            {
+                                            }
+                                        }
+                                        else if (item.TrangThai == false)
+                                        {
+                                            if (item.HoatDong.ThoiGianBD <= DateTime.Now && item.HoatDong.ThoiGianKT >= DateTime.Now)
+                                            {
+                                                <p style="cursor:pointer" onclick="Xacnhan(@item.IdDangKiHD)">@Html.CheckBox("f", false)</p>
+                                            }
+                                            else if (item.HoatDong.ThoiGianKT < DateTime.Now)
+                                            {
+                                                <p style="cursor:pointer">@Html.CheckBox("f", false)</p>
+                                            }
+                                            else
+                                            {
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.TrangThai == true && item.HoatDong.ThoiGianKT < DateTime.Now)
+                                        {
+                                            @*@Html.ActionLink("download", "Download", "HDThamGia")*@
+                                            <a style="cursor:pointer" href="@Url.Action("InChungNhan", "DsSinhvienTheohd",new RouteValueDictionary(new { @id = item.IdDangKiHD }))">Xem</a>
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.LayCn == true)
+                                        {
+                                            if (item.HoatDong.ThoiGianBD <= DateTime.Now && item.HoatDong.ThoiGianKT >= DateTime.Now)
+                                            {
+                                            }
+                                            else if (item.HoatDong.ThoiGianKT < DateTime.Now)
+                                            {
+                                                <p style="cursor:pointer">@Html.CheckBox("t", true)</p>
+                                            }
+                                            else
+                                            {
+                                            }
+                                        }
+                                        else if (item.LayCn == false)
+                                        {
+                                            if (item.HoatDong.ThoiGianBD <= DateTime.Now && item.HoatDong.ThoiGianKT >= DateTime.Now)
+                                            {
+                                            }
+                                            else if (item.HoatDong.ThoiGianKT < DateTime.Now)
+                                            {
+                                                <p style="cursor:pointer">@Html.CheckBox("f", false)</p>
+                                            }
+                                            else
+                                            {
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.HoatDong.ThoiGianBD <= DateTime.Now && item.HoatDong.ThoiGianKT >= DateTime.Now)
+                                        {
+
+                                        }
+                                        else if (item.HoatDong.ThoiGianKT < DateTime.Now)
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            <a style="cursor:pointer" onclick="Delete(@item.IdDangKiHD)"><img src="https://img.icons8.com/flat_round/64/000000/delete-sign.png" style="width:35px;height:35px"></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+<div id="create-service-model1" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn sẽ xóa sinh viên: <strong name="MASO"></strong> - <strong name="NAME"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteInfo()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*--Modal dialog--*@
+<div id="create-service-model" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm sinh viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Họ tên</label>
+                        <input type="text" class="form-control" name="NAME">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Lớp</label>
+                        <input type="text" class="form-control" name="DESCRIPTION">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="Save()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var Iddkhd1 = 0;
+    function Add() {
+        $('#create-service-model').modal("show");
+    }
+
+    function Save(id1) {
+        Iddkhd1 = id1;
+        $.ajax({
+            url: '/DsSinhvienTheohd/Add/' + Iddkhd1,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id1: Iddkhd1,
+                IdHoatDong: Iddkhd1,
+                IdDangKiHD : Iddkhd
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function DeleteInfo() {
+        $.ajax({
+            url: '/DsSinhvienTheohd/Delete',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdDangKiHD: Iddkhd
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delete(id) {
+        Iddkhd = id;
+
+        $.ajax({
+            url: '/DsSinhvienTheohd/Get/' + Iddkhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Iddkhd,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='MASO']").text(json.MASO);
+            $("[name='NAME']").text(json.NAME);
+            $('#create-service-model1').modal("show");
+        });
+    }
+
+    function Xacnhan(id) {
+        Iddkhd = id;
+
+        $.ajax({
+            url: '/DsSinhvienTheohd/Get/' + Iddkhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Iddkhd,
+            }
+        })
+        $.ajax({
+            url: '/DsSinhvienTheohd/Xacnhanthamgia',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdDangKiHD: Iddkhd
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xác nhận thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+</script>

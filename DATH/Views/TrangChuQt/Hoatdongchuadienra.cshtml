@@ -1,0 +1,229 @@
+﻿@using DATH.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<HoatDong>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+<script src="//cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+
+<h2>Quản lý hoạt động sắp diễn ra</h2>
+
+<div style="margin-top:30px">
+    <div id="txtTimKiem">
+        @using (Html.BeginForm("KetQuaTimKiem", "TrangChuQt", FormMethod.Post))
+            {
+            @Html.TextBox("txtTimKiem", "", htmlAttributes: new { @class = "TextBoxTimKiem", @placeholder = "Nhập vào từ khóa cần tìm" })
+
+            @*Chèn button và ảnh*@
+            <div id="buttontk">
+                <button type="submit"><i class="icon-search"></i></button>
+            </div>
+        }
+    </div>
+</div>
+
+@foreach (var item in Model)
+{
+    @*<a style="text-decoration:none" onclick="EditSurvice(@item.IdHoatDong)">*@
+    <div class="row" style="margin-top:65px;margin-left:1px">
+        <div class="col">
+            <div class="info-box-2 bg-teal hover-expand">
+                <div class="icon">
+                    <img onclick="EditSurvice(@item.IdHoatDong)" style="width:80px;height:80px;margin-top:10px;margin-left:8px" src="~/Images/@item.HinhAnh" alt="Image">
+                </div>
+                <div class="content" style="margin-left:15px">
+                    <div onclick="EditSurvice(@item.IdHoatDong)" class="number" style="margin-top:0.5px">@Html.DisplayFor(modelItem => item.TenHoatDong) (@Html.DisplayFor(modelItem => item.SLDaDangKi)/@Html.DisplayFor(modelItem => item.GioiHanNguoiThamGia))</div>
+                    <div class="text" id="trangthai">
+                        Địa điểm : @Html.DisplayFor(modelItem => item.Diadiem)
+                        @if (@item.TrangThai == "dd" && item.ThoiGianBD > DateTime.Now)
+                        {
+                            <div id="dd"  style="cursor:pointer;margin-left:500px;margin-top:-18px;color:blue">Đã duyệt</div>
+                        }
+                    </div>
+
+                    <div style="margin-top:5px" class="text"> Bắt đầu: @Html.DisplayFor(modelItem => item.ThoiGianBD)  -  Kết thúc: @Html.DisplayFor(modelItem => item.ThoiGianKT)</div>
+
+                    <ul style="margin-left:600px;margin-top:-48px" id="in">
+                        <li><a href="@Url.Action("Index", "DsSinhvienTheohd",new RouteValueDictionary(new { @id = item.IdHoatDong }))"><img src="https://img.icons8.com/dusk/64/000000/view-file.png" style="width:35px;height:35px"></a></li>
+                        <li><a style="text-decoration:none;cursor:pointer" onclick="EditSurvice(@item.IdHoatDong)"><img style="width:35px;height:35px" src="https://img.icons8.com/cute-clipart/50/000000/details-pane.png"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*</a>*@
+}
+
+@*--Modal dialog--*@
+<div id="create-service-model" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết hoạt động</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    @*<div>
+                            <label class="col-form-label">Mã quyền</label>
+                            <input type="text" class="form-control" name="NAME">
+                        </div>
+
+                        <div>
+                            <label class="col-form-label">Tên quyền</label>
+                            <input type="text" class="form-control" name="DESCRIPTION">
+                        </div>*@
+                    <div>
+                        <h1 style="color:black;font-weight:400" name="NAME2"><b></b></h1>
+                    </div>
+                    <div id="chitiethoatdong">
+                        <p>Đơn vị tổ chức: <strong style="font-size:15px" name="DONVITOCHUC2"></strong></p>
+                        <p>Người tạo hoạt động: <strong style="font-size:15px" name="NGUOITAO2"></strong></p>
+                        <p>Thời gian tạo: <strong style="font-size:15px" name="THOIGIANTAO2"></strong></p>
+                        <p>
+                            Thời gian:<strong style="font-size:15px" name="THOIGIANBATDAU2"></strong>
+                            -<strong style="font-size:15px" name="THOIGIANKETTHUC2"> </strong>
+                        </p>
+                        <p>Địa điểm: <strong style="font-size:15px" name="DIADIEM2"></strong></p>
+                        <p>Giới hạn người tham gia: <strong style="font-size:15px" name="GIOIHAN2"></strong></p>
+                        <p>Số lượng đã đăng ký: <strong style="font-size:15px" name="SLDADANGKY2"></strong></p>
+                        <p>Nội dung chỉnh sửa: <strong style="font-size:15px" name="NDCS2"></strong></p>
+                    </div>
+                    <br />
+                    <strong style="margin-right:35px" name="DESCRIPTION2"></strong>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model4" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn muốn xét duyệt hoạt động: <strong name="TENQ1"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="Xetduyethd()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function Xetduyethd() {
+        $.ajax({
+            url: '/TrangChuQt/DuyetHd',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdHoatDong: Idhd,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Xetduyet(id) {
+        Idhd = id;
+
+        $.ajax({
+            url: '/TrangChuQt/GetHoatdong/' + Idhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idhd
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='TENQ1']").text(json.NAME);
+            $("[name='ID']").text(json.ID);
+            $('#create-service-model4').modal("show");
+        });
+    }
+
+        function EditSurvice(id1) {
+            IdHoatdong1 = id1;
+
+            $.ajax({
+                url: '/TrangchuQt/GetHoatdong1/' + IdHoatdong1,
+                type: 'POST',
+                dataType: 'text',
+                data: {
+                    id1: IdHoatdong1,
+                }
+            }).done(function (ketqua) {
+                var json = JSON.parse(ketqua);
+
+                $("[name='NAME2']").text(json.NAME);
+                $("[name='DONVITOCHUC2']").text(json.DONVITOCHUC);
+                $("[name='NGUOITAO2']").text(json.NGUOITAO);
+                $("[name='THOIGIANTAO2']").text(json.THOIGIANTAO);
+                $("[name='THOIGIANBATDAU2']").text(json.THOIGIANBATDAU);
+                $("[name='THOIGIANKETTHUC2']").text(json.THOIGIANKETTHUC);
+                $("[name='DIADIEM2']").text(json.DIADIEM);
+                $("[name='GIOIHAN2']").text(json.GIOIHAN);
+                $("[name='SLDADANGKY2']").text(json.SLDADANGKY);
+                $("[name='DESCRIPTION2']").html(json.MOTACHINH);
+                $("[name='NDCS2']").html(json.NDCHINHSUA);
+                $('#create-service-model').modal("show");
+            });
+        }
+
+
+</script>
+
+<div id="trang">
+    <h3>Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount</h3>
+    <div class="sotrang">
+        @Html.PagedListPager(Model, Page => Url.Action("Hoatdongdangdienra", new { Page = Page }))
+    </div>
+</div>
+<style>
+    #txtTimKiem {
+        float: left;
+        width: 500px;
+        height: 27px;
+        margin-bottom: -26px;
+    }
+
+    #buttontk {
+        float: left;
+        margin-left: 470px;
+    }
+
+    .icon img {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    #in li {
+        display: inline-block;
+        margin-left: 8px;
+    }
+</style>
+

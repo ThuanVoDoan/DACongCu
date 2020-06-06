@@ -1,0 +1,52 @@
+﻿@model DATH.Models.NguoiDung
+
+@{
+    ViewBag.Title = "ThemMoi";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2>Thêm quản trị viên</h2>
+<p style="font-size:11px">Quản lý quản trị viên/Thêm mới</p>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <p>Mã quản trị</p>
+        <p>@Html.EditorFor(model => model.SoId, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p>Họ tên</p>
+        <p>@Html.EditorFor(model => model.Ho_Ten, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p>Số điện thoại</p>
+        <p>@Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p>Chức vụ</p>
+        <p>@Html.DropDownList("IdChucVu")</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p>Tài khoản</p>
+        <p>@Html.EditorFor(model => model.TaiKhoan, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p>Mật khẩu</p>
+        <p>@Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <input id="btntao" type="submit" value="Tạo" />
+    </div>
+}
+
+<style>
+    #btntao:hover {
+        background-color: #0094ff;
+    }
+</style>

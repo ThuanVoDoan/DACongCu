@@ -1,0 +1,112 @@
+﻿
+@if (ViewBag.chucnang == "BCS")
+{
+    <div id="menu">
+        <ul>
+            <li style="width: 120px;text-align:center"><a href="@Url.Action("Index","TrangChu")">Trang chủ</a></li>
+            <li style="width: 240px;text-align:center">@Html.Action("HienThiTenSinhVienPartial", "Login")</li>
+            <li style="width:120px;text-align:center">
+                <a href="#">Chức năng</a>
+                <ul class="sub-menu">
+                    <li><a href="@Url.Action("Index","Login")">@Html.Action("DangXuat", "Login")</a></li>
+                    <li><a href="@Url.Action("Index","HDThamGia")">@Html.Action("DSHoatDongDangKy", "Login")</a></li>
+                    <li><a href="@Url.Action("Index","TaoHdBCS")" />@Html.Action("TaoHoatDong", "Login")</li>
+                    <li><a href="@Url.Action("Index","HDDaTaoBCS")">@Html.Action("DSHoatDongDatao", "Login")</a></li>
+                    <li><a href="@Url.Action("Index","HDChoChinhSuaBCS")">@Html.Action("DSHoatDongChinhSua", "Login")</a></li>
+                    <li><a href="@Url.Action("Hoatdongcualop","TrangChu")">@Html.Action("DSHoatDongCuaLop", "Login")</a></li>
+                    <li><a href="@Url.Action("DoiMK","Login")">@Html.Action("DoiMatKhau", "Login")</a></li>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+else if (ViewBag.chucnang == "SV")
+{
+    <div id="menu">
+        <ul>
+            <li style="width: 120px;text-align:center"><a href="@Url.Action("Index","TrangChu")">Trang chủ</a></li>
+            <li style="width: 240px;text-align:center">@Html.Action("HienThiTenSinhVienPartial", "Login") @Html.Action("HienThiChucVuPartial", "Login")</li>
+            <li style="width:120px;text-align:center">
+                <a href="#">Chức năng</a>
+                <ul class="sub-menu1">
+                    <li><a href="@Url.Action("Index","Login")">@Html.Action("DangXuat", "Login")</a></li>
+                    <li><a href="@Url.Action("Index","HDThamGia")">@Html.Action("DSHoatDongDangKy", "Login")</a></li>
+                    <li><a href="@Url.Action("Hoatdongcualop","TrangChu")">@Html.Action("DSHoatDongCuaLop", "Login")</a></li>
+                    <li><a href="@Url.Action("DoiMK","Login")">@Html.Action("DoiMatKhau", "Login")</a></li>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+else if (ViewBag.chucnang == "")
+{
+    <div id="menu">
+        <ul>
+            <li style="width: 120px;text-align:center"><a href="@Url.Action("Index","TrangChu")">Trang chủ</a></li>
+            <li style="width: 240px;text-align:center"><a href="@Url.Action("Index","Login")">@Html.Action("HienThiTenSinhVienPartial", "Login") @Html.Action("HienThiChucVuPartial", "Login")</a></li>
+        </ul>
+    </div>
+}
+
+<style>
+#menu {
+margin-top: -15px;
+padding: 0;
+}
+
+#menu ul {
+background: #2968c1;
+text-align: left;
+overflow: hidden;
+}
+
+#menu ul li {
+color: #f1f1f1;
+display: inline-table;
+height: 40px;
+line-height: 40px;
+}
+
+#menu ul li a {
+color: #f1f1f1;
+text-decoration: none;
+display: block;
+}
+
+#menu ul li a:hover {
+background: #f1f1f1;
+color: #2968c1;
+width:182px;
+text-align:center
+}
+
+#menu ul li > .sub-menu {
+width: 212px;
+height: 290px;
+display: none;
+position: absolute;
+}
+
+#menu ul li:hover .sub-menu {
+display: block;
+z-index: 3;
+color:#2968c1;
+}
+
+#menu ul li > .sub-menu1 {
+width: 212px;
+height: 170px;
+display: none;
+position: absolute;
+}
+
+#menu ul li:hover .sub-menu1 {
+display: block;
+z-index: 3;
+color:#2968c1;
+}
+</style>
+
+

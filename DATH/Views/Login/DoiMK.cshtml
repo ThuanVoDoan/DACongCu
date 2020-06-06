@@ -1,0 +1,228 @@
+﻿@model DATH.Models.NguoiDung
+
+@{
+    ViewBag.Title = "DoiMK";
+    Layout = "~/Views/LayOut/NguoidungLayout.cshtml";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<hr />
+<h2 style="margin-left:21px"><b>Đổi mật khẩu</b></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdInfo)
+
+        <div style="margin-left:35px" class="form-group">
+            <div class="col-md-10">
+                <p hidden id="mkdb">@ViewBag.mk</p>
+                <p>Nhập mật khẩu cũ</p>
+                <input placeholder="Mật khẩu cũ" type="password" id="mkc" /><img style="margin-left:10px;cursor:pointer" id="showPassword" src="https://img.icons8.com/material-two-tone/24/000000/visible.png" />
+                <p hidden style="color:red" id="vlmkc">Không trùng khớp</p>
+                <br />
+                <p style="margin-top:25px" id="nmkm">Nhập mật khẩu mới</p>
+                <input placeholder="Mật khẩu mới" type="password" id="mkm" /><img style="margin-left:10px;cursor:pointer" id="showPassword1" src="https://img.icons8.com/material-two-tone/24/000000/visible.png" />
+                <br />
+                <p style="margin-top:25px" id="nmkm1">Nhập lại mật khẩu mới</p>
+                <input placeholder="Nhập lại mật khẩu mới" type="password" id="mkm1" name="pass" /><img style="margin-left:10px;cursor:pointer" id="showPassword2" src="https://img.icons8.com/material-two-tone/24/000000/visible.png" />
+                <p hidden style="color:red" id="vlmkm">Không trùng khớp</p>
+            </div>
+        </div>
+
+        <div style="margin-left:20px;margin-bottom:20px">
+            <input style="cursor:pointer" id="btntao" type="submit" value="Đổi mật khẩu" />
+        </div>
+    </div>
+}
+
+<style>
+    #slider {
+        display: none;
+    }
+
+    #btntao:hover {
+        background-color: #0094ff;
+    }
+</style>
+
+<script>
+    $(document).ready(function (e) {
+
+        $('#showPassword').on('click', function (e) {
+           
+            // Get the password field
+            var passwordField = $('#mkc');
+
+            // Get the current type of the password field will be password or text
+            var passwordFieldType = passwordField.attr('type');
+
+            // Check to see if the type is a password field
+            if (passwordFieldType == 'password') {
+                // Change the password field to text
+                passwordField.attr('type', 'text');
+            } else {
+                // If the password field type is not a password field then set it to password
+                passwordField.attr('type', 'password');
+            }
+        });
+
+        $('#showPassword1').on('click', function (e) {
+
+            // Get the password field
+            var passwordField = $('#mkm');
+
+            // Get the current type of the password field will be password or text
+            var passwordFieldType = passwordField.attr('type');
+
+            // Check to see if the type is a password field
+            if (passwordFieldType == 'password') {
+                // Change the password field to text
+                passwordField.attr('type', 'text');
+            } else {
+                // If the password field type is not a password field then set it to password
+                passwordField.attr('type', 'password');
+            }
+        });
+
+        $('#showPassword2').on('click', function (e) {
+
+            // Get the password field
+            var passwordField = $('#mkm1');
+
+            // Get the current type of the password field will be password or text
+            var passwordFieldType = passwordField.attr('type');
+
+            // Check to see if the type is a password field
+            if (passwordFieldType == 'password') {
+                // Change the password field to text
+                passwordField.attr('type', 'text');
+            } else {
+                // If the password field type is not a password field then set it to password
+                passwordField.attr('type', 'password');
+            }
+        });
+
+        $("#mkc").focus();
+        
+        $("#btntao").click(function (e) {
+            if ($("#mkc").val() == "" || $("#mkm").val() == "" || $("#mkm1").val() == "") {
+                e.preventDefault();
+            }
+            if ($("#mkm").val() == "" && $("#mkm1").val() == "" || $("#mkm").val() == "") {
+                $("#mkm").focus();
+            } else if ($("#mkm1").val() == "") {
+                $("#mkm1").focus();
+            }
+            
+            if ($("#mkm").val() != $("#mkm1").val()) {
+                e.preventDefault();
+            } else {
+                alert("Đổi thành công")
+            }
+        });
+
+        if ($("#mkc").val() == "" || $("#mkc").val() != $("#mkdb").text()) {
+            $("#mkm").hide();
+            $("#nmkm").hide();
+            $("#mkm1").hide();
+            $("#nmkm1").hide();
+            $("#showPassword1").hide();
+            $("#showPassword2").hide();
+            $("#btntao").hide();
+        }
+
+        //$("#mkc").focusout(function () {
+        //    if ($("#mkc").val() == $("#mkdb").text()) {
+        //        $("#mkm").show();
+        //        $("#nmkm").show();
+        //        $("#mkm1").show();
+        //        $("#nmkm1").show();
+        //        $("#vlmkc").hide();
+        //        $("#mkm").focus();
+        //        $("#btntao").show();
+        //    }
+        //    else {
+        //        $("#mkc").val("");
+        //        $("#mkc").focus();
+        //        $("#vlmkc").show();
+        //    }
+        //})
+
+        $('#mkc').keypress(function (event) {
+            if (event.keyCode == 13 || event.which == 13) {
+                event.preventDefault();
+                if ($("#mkc").val() == $("#mkdb").text()) {
+                    $("#mkm").show();
+                    $("#nmkm").show();
+                    $("#mkm1").show();
+                    $("#nmkm1").show();
+                    $("#showPassword1").show();
+                    $("#showPassword2").show();
+                    $("#vlmkc").hide();
+                    $("#btntao").show();
+                    $("#mkm").focus();
+                }
+                else {
+                    $("#vlmkc").show();
+                    $("#mkc").val("");
+                    $("#mkc").focus();
+                }
+            }
+        });
+
+        //$("#mkm").focusout(function () {
+        //    if ($("#mkm").val() != "") {
+        //        var words = $('#mkm').val().length;
+        //        if (words < 4) {
+        //            alert("Mật khẩu không được nhỏ hơn 4 ký tự");
+        //            $("#mkm").focus();
+        //            $("#mkm").val("");
+        //        }
+        //    } else if ($("#mkm").val() == "") {
+        //        $("#mkm").focus()
+        //    }
+        //});
+
+        $('#mkm').keypress(function (event) {
+            if (event.keyCode == 13 || event.which == 13) {
+                var words = $('#mkm').val().length;
+                if (words < 4) {
+                    event.preventDefault();
+                    alert("Mật khẩu không được nhỏ hơn 4 ký tự");
+                    $("#mkm").focus();
+                    $("#mkm").val("");
+                } else {
+                    $("#mkm1").focus();
+                }
+            }
+        });
+
+        //$("#mkm1").focusout(function () {
+        //    if ($("#mkm1").val() != $("#mkm").val()) {
+        //        $("#vlmkm").show();
+        //        $("#mkm1").val("");
+        //        $("#mkm1").focus();
+        //    } else {
+        //        $("#vlmkm").hide();
+        //    }
+        //});
+
+        $('#mkm1').keypress(function (e) {
+            if (event.keyCode == 13 || event.which == 13) {
+                if ($("#mkm1").val() != $("#mkm").val()) {
+                    $("#vlmkm").show();
+                    $("#mkm1").val("");
+                    $("#mkm1").focus();
+                    e.preventDefault();
+                } else {
+                    alert("Đổi thành công")
+                }
+            } 
+        });
+    });
+</script>

@@ -1,0 +1,170 @@
+﻿@model IEnumerable<DATH.Models.HoatDong>
+
+@{
+    ViewBag.Title = "HDChoChinhSua";
+    Layout = "~/Views/LayOut/NguoidungLayout.cshtml";
+}
+<hr />
+<h2 style="margin-left:40px"><b>Hoạt động cần chỉnh sửa</b></h2>
+<table style="margin-left:40px;width:1168px" id="table_id" class="display">
+    <thead>
+        <tr>
+            <th>Số thứ tự</th>
+            <th>Hình ảnh</th>
+            <th>
+                Tên Hoạt Động
+            </th>
+            <th>
+                Thời gian tạo
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Số thứ tự</th>
+            <th>Hình ảnh</th>
+            <th>
+                Tên Hoạt Động
+            </th>
+            <th>
+                Thời gian tạo
+            </th>
+            <th></th>
+        </tr>
+    </tfoot>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td></td>
+                <td id="im"><img src="~/Images/@item.HinhAnh" alt="Image"></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenHoatDong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThoiGianT)
+                </td>
+                <td>
+                    <a style="cursor:pointer" href="@Url.Action("ChinhSua", "HDChoChinhSuaBCS",new RouteValueDictionary(new { @id = item.IdHoatDong }))"><img src="https://img.icons8.com/plasticine/100/000000/edit.png" style="width:35px;height:35px"></a>
+                    <a class="dk" style="cursor:pointer" onclick="Delete(@item.IdHoatDong)"><img src="https://img.icons8.com/flat_round/64/000000/delete-sign.png" style="width:30px;height:30px"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<dialog id="hopthoai" @*style="margin-top:-670px"*@>
+    <h2>Thông báo</h2>
+    <div>
+        <p>Bạn sẽ xóa hoạt động: <strong name="NAME"></strong></p>
+    </div>
+    <div>
+        <ul id="ht">
+            <li><button class="btnht" onclick="a()">Hủy</button></li>
+            <li><button class="btnht" onclick="DeleteInfo()">Đồng ý</button></li>
+        </ul>
+    </div>
+</dialog>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#table_id').DataTable({
+            "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Vietnamese.json" },
+            columnDefs: [{
+                sortable: false,
+                "class": "index",
+                targets: 0
+            }],
+            order: [[1, 'asc']],
+            fixedColumns: true
+        });
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    });
+
+    function DeleteInfo() {
+        $.ajax({
+            url: '/HDDaTaoBCS/Delete',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdHoatDong: Idhd
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delete(id) {
+        Idhd = id;
+        var x = document.getElementById("hopthoai");
+        $.ajax({
+            url: '/HDDaTaoBCS/Get/' + Idhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idhd,
+            }
+        }).done(function (ketqua) {
+
+            var json = JSON.parse(ketqua);
+            $("[name='NAME']").text(json.NAME);
+            //$("[name='THOIGIANTAO']").text(json.NAME);
+            x.open = true;
+        });
+    }
+
+    function a() {
+        var x = document.getElementById("hopthoai");
+        x.open = false;
+    }
+
+</script>
+
+<style>
+    #slider {
+        display: none;
+    }
+
+    #hopthoai{
+        width:500px;
+        position:absolute;
+        left:0px;
+        top:169px
+    }
+
+    #ht li {
+        display: inline-block;
+        text-decoration: none;
+        margin-left: 70px;
+    }
+
+    .btnht {
+        width: 100px;
+        height: 35px;
+        font-size: 12px;
+        padding: 10px 24px;
+        border-radius: 12px;
+    }
+
+    .btnht:hover {
+        background-color: #2968c1;
+    }
+    td#im img{
+    width:120px;height:80px;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    }
+</style>

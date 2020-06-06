@@ -1,0 +1,357 @@
+﻿@model IEnumerable<DATH.Models.Quyen>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<h2>Quản lý quyền</h2>
+
+<p style="margin-top:30px">
+    @*@Html.ActionLink("Thêm mới", "ThemMoi")*@
+    <a style="cursor:pointer" onclick="Add()">Thêm mới</a>
+</p>
+
+
+<!-- Exportable Table -->
+<div class="row clearfix" style="margin-top:30px">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    
+                </h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MoTa)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TenQuyen)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MoTa)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TenQuyen)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td onclick="AddPQ(@item.IdQuyen)" style="cursor:pointer"></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MoTa)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TenQuyen)
+                                    </td>
+                                    <td>
+                                        <a style="cursor:pointer" onclick="EditSurvice(@item.IdQuyen)"><img src="https://img.icons8.com/plasticine/100/000000/edit.png" style="width:35px;height:35px"></a>
+                                        <a style="cursor:pointer" onclick="Delete(@item.IdQuyen)"><img src="https://img.icons8.com/flat_round/64/000000/delete-sign.png" style="width:35px;height:35px"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+@*--Modal dialog--*@
+<div id="create-service-model" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật quyền</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Mã quyền</label>
+                        <input type="text" class="form-control" name="DESCRIPTION">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên quyền</label>
+                        <input type="text" class="form-control" name="NAME">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model1" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn sẽ xóa quyền: <strong name="TENQ"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteInfo()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model2" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm quyền</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Mã quyền</label>
+                        <input type="text" class="form-control" name="DESCRIPTION1">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên quyền</label>
+                        <input type="text" class="form-control" name="NAME1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="Save()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model3" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm phân quyền</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Tên chức vụ</label>
+                        <select name="NAME3" multiple="multiple" id="selectList">
+                            <option value="1">Khoa</option>
+                            <option value="2">Đoàn Khoa</option>
+                            <option value="3">Ban Cán Sự</option>
+                        </select>
+                        <input type="text" class="form-control" id="idcv3" name="IDCV3">
+                        @*<input type="text" class="form-control" name="NAME3">*@
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên quyền</label>
+                        <input type="text" class="form-control" name="NAMEQ">
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" id="n" name="ID3">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfoPQ()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var IdQuyen = 0;
+    var IdCV_Q = 0;
+
+    function AddPQ(id) {
+        IdQuyen = id;
+
+        $.ajax({
+            url: '/QuanlyQuyen/GetQuyen/' + IdQuyen,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: IdQuyen,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='ID3']").val(json.IDQ);
+            $("[name='NAMEQ']").val(json.NAME);
+            $("#n").hide();
+            $('#selectList').change(function(){
+                var y = $('#selectList').val();
+                $("#idcv3").val(y)
+            });
+            $("#idcv3").hide();
+            $('#create-service-model3').modal("show");
+            
+        });
+    }
+
+    function SaveInfoPQ() {
+        //var name = $("[name='NAME3']").val();
+        var idcv = $("[name='IDCV3']").val();
+        var idq = $("[name='ID3']").val();
+        $.ajax({
+            url: '/QuanlyQuyen/AddPhanquyen',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdChucVu: idcv,
+                IdQuyen: idq
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                //location.reload();
+                $('#create-service-model3').modal("hide");
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+
+    function SaveInfo() {
+        var name = $("[name='NAME']").val();
+        var description = $("[name='DESCRIPTION']").val();
+        $.ajax({
+            url: '/QuanlyQuyen/EditQuyen',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdQuyen: IdQuyen,
+                TenQuyen: name,
+                MoTa: description,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function DeleteInfo() {
+        $.ajax({
+            url: '/QuanlyQuyen/DeleteQuyen',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdQuyen: IdQuyen
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delete(id) {
+        IdQuyen = id;
+
+        $.ajax({
+            url: '/QuanlyQuyen/GetQuyen/' + IdQuyen,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: IdQuyen,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='TENQ']").text(json.NAME);
+            $('#create-service-model1').modal("show");
+        });
+    }
+
+    function Add() {
+       $('#create-service-model2').modal("show");
+    }
+
+    function Save() {
+        var name = $("[name='NAME1']").val();
+        var description = $("[name='DESCRIPTION1']").val();
+        $.ajax({
+            url: '/QuanlyQuyen/AddQuyen',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdQuyen: IdQuyen,
+                TenQuyen: name,
+                MoTa: description,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function EditSurvice(id) {
+        IdQuyen = id;
+
+        $.ajax({
+            url: '/QuanlyQuyen/GetQuyen/' + IdQuyen,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: IdQuyen,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='NAME']").val(json.NAME);
+            $("[name='DESCRIPTION']").val(json.DESCRIPTION);
+            $('#create-service-model').modal("show");
+        });
+    }
+</script>

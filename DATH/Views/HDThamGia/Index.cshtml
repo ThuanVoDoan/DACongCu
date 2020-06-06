@@ -1,0 +1,222 @@
+﻿@model IEnumerable<DATH.Models.ThongBao>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/NguoidungLayout.cshtml";
+}
+
+<hr />
+<h2 style="margin-left:40px"><b>Hoạt động đã đăng ký</b></h2>
+<table style="margin-left:40px;width:1168px" id="table_id" class="display">
+    <thead>
+        <tr>
+            <th>Số thứ tự</th>
+            <th>
+                Hình ảnh
+            </th>
+            <th>
+                Tên Hoạt Động 
+            </th>
+            <th>
+                Thời gian bắt đầu
+            </th>
+            <th>
+                Thời gian kết thúc
+            </th>
+            <th>Ngày còn lại</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Số thứ tự</th>
+            <th>
+                Hình ảnh
+            </th>
+            <th>
+                Tên Hoạt Động
+            </th>
+            <th>
+                Thời gian bắt đầu
+            </th>
+            <th>
+                Thời gian kết thúc
+            </th>
+            <th>Ngày còn lại</th>
+            <th></th>
+        </tr>
+    </tfoot>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td></td>
+                <td id="im">
+                    <img src="~/Images/@item.HinhAnh" alt="Image">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenHoatDong) 
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThoiGianBD)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThoiGianKT)
+                </td>
+                <td style="text-align:center">
+                    @if (item.ngayconlai <= 0 && item.TrangThaihd == "dd")
+                    {
+                        <img src="https://img.icons8.com/offices/30/000000/checked-2--v2.png" style="width:30px;height:30px"/>
+                    }
+                    else if (item.TrangThaihd == "dh")
+                    {
+                        <p>Đã hủy</p>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.ngayconlai)
+                    }
+                </td>
+                <td>
+                    @if (item.ngayconlai <= 0)
+                    {
+                        <a style="margin-left:10px" href="@Url.Action("XemChiTiet","TrangChu",new RouteValueDictionary(new { @HoatDong = item.IdHoatDong }))"><img src="https://img.icons8.com/cute-clipart/50/000000/details-pane.png" style="width:35px;height:35px"></a>
+                    }
+                    else if (item.TrangThaihd == "dh")
+                    {
+                        
+                    }
+                    else
+                    {
+                        <a style="cursor:pointer" onclick="Delete(@item.IdDangKiHD)"><img src="https://img.icons8.com/flat_round/64/000000/delete-sign.png" style="width:30px;height:30px"></a>
+                        <a style="margin-left:10px" href="@Url.Action("XemChiTiet","TrangChu",new RouteValueDictionary(new { @HoatDong = item.IdHoatDong }))"><img src="https://img.icons8.com/cute-clipart/50/000000/details-pane.png" style="width:35px;height:35px"></a>
+                    }
+                    
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<dialog id="hopthoai" @*style="margin-top:-500px"*@><h2>Thông báo</h2>
+    <div>
+        <p>Bạn sẽ xóa hoạt động: <strong name="NAME"></strong></p>
+        <p name="idhd" hidden></p>
+    </div>
+    <div>
+        <ul id="ht">
+            <li><button class="btnht" onclick="a()">Hủy</button></li>
+            <li><button class="btnht" onclick="DeleteInfo()">Đồng ý</button></li>
+        </ul>
+    </div>
+</dialog>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var table = $('#table_id').DataTable({
+            "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Vietnamese.json" },
+            columnDefs: [{
+                sortable: true,
+                "class": "index",
+                targets: 0
+            }],
+            order: [[1, 'asc']],
+            fixedColumns: true,
+           
+        });
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    });
+
+    function DeleteInfo() {
+        var a = $("[name='idhd']").text();
+        $.ajax({
+            url: '/HDThamGia/Delete',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdDangKiHD: Iddkhd,
+                IdHoatDong : a,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delete(id) {
+        Iddkhd = id;
+        var x = document.getElementById("hopthoai");
+        $.ajax({
+            url: '/HDThamGia/Get/' + Iddkhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Iddkhd,
+            }
+        }).done(function (ketqua) {
+
+            var json = JSON.parse(ketqua);
+            $("[name='NAME']").text(json.NAME);
+            $("[name='idhd']").text(json.HD);
+            x.open = true;
+        });
+    }
+
+    function a(){
+        var x = document.getElementById("hopthoai");
+            x.open = false;
+    }
+</script>
+
+<style>
+    #slider {
+        display: none;
+    }
+
+    #hopthoai{
+        width:500px;
+        position:absolute;
+        left:0px;
+        top:169px
+    }
+
+    #ht li{
+        display:inline-block;
+        text-decoration:none;
+        margin-left:70px
+    }
+
+    .btnht {
+        width:100px;
+        height:35px;
+        font-size:12px;
+        padding: 10px 24px;
+        border-radius: 12px;
+    }
+
+    .btnht:hover{
+        background-color:#2968c1;
+    }
+
+    td#im img{
+        width:120px;height:80px;
+        border-bottom-left-radius:10px;
+        border-bottom-right-radius:10px;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+    }
+</style>

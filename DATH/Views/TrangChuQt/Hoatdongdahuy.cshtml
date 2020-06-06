@@ -1,0 +1,147 @@
+﻿@using DATH.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<HoatDong>
+
+@{
+    ViewBag.Title = "Hoatdongdahuy";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2 style="margin-top:30px">Quản lý hoạt động đã hủy</h2>
+
+<div style="margin-top:30px">
+    <div id="txtTimKiem">
+        @using (Html.BeginForm("KetQuaTimKiem", "TrangChuQt", FormMethod.Post))
+        {
+            @Html.TextBox("txtTimKiem", "", htmlAttributes: new { @class = "TextBoxTimKiem", @placeholder = "Nhập vào từ khóa cần tìm" })
+
+            @*Chèn button và ảnh*@
+            <div id="buttontk">
+                <button type="submit"><i class="icon-search"></i></button>
+            </div>
+        }
+    </div>
+</div>
+@foreach (var item in Model)
+{
+    <div class="row" style="margin-top:65px;margin-left:1px">
+        <div class="col">
+            <div class="info-box-2 bg-teal hover-expand">
+                <div class="icon">
+                    <img onclick="EditSurvice(@item.IdHoatDong)" style="width:80px;height:80px;margin-top:10px;margin-left:8px" src="~/Images/@item.HinhAnh" alt="Image">
+                </div>
+                <div class="content" style="margin-left:15px">
+                    <div onclick="EditSurvice(@item.IdHoatDong)" class="number">@Html.DisplayFor(modelItem => item.TenHoatDong)</div>
+                    <div class="text">
+                        Người tạo : @Html.DisplayFor(modelItem => item.NguoiDung.Ho_Ten)
+                        @if (@item.TrangThai == "dd")
+                        {
+                            <div style="margin-left:500px;margin-top:-18px;color:blue">@Html.DisplayFor(modelItem => item.TrangThai)</div>
+                        }
+                        else if (@item.TrangThai == "cd")
+                        {
+                            <div style="margin-left:500px;margin-top:-18px;color:orange">@Html.DisplayFor(modelItem => item.TrangThai)</div>
+                        }
+                        else if (@item.TrangThai == "ccs")
+                        {
+                            <div style="margin-left:500px;margin-top:-18px;color:green">@Html.DisplayFor(modelItem => item.TrangThai)</div>
+                        }
+                        else
+                        {
+                            <div onclick="Xetduyet(@item.IdHoatDong)" style="cursor:pointer;margin-left:500px;margin-top:-18px;color:red">Đã hủy</div>
+                        }
+                    </div>
+                    <div class="text"> Bắt đầu : @Html.DisplayFor(modelItem => item.ThoiGianBD)  -  Kết thúc : @Html.DisplayFor(modelItem => item.ThoiGianKT)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="create-service-model4" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn muốn xét duyệt hoạt động: <strong name="TENQ1"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="Xetduyethd()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Xetduyethd() {
+        $.ajax({
+            url: '/TrangChuQt/DuyetHd',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdHoatDong: Idhd,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Xetduyet(id) {
+        Idhd = id;
+
+        $.ajax({
+            url: '/TrangChuQt/GetHoatdong/' + Idhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idhd
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='TENQ1']").text(json.NAME);
+            $("[name='ID']").text(json.ID);
+            $('#create-service-model4').modal("show");
+        });
+    }
+</script>
+
+<div id="trang">
+    <h3>Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount</h3>
+    <div class="sotrang">
+        @Html.PagedListPager(Model, Page => Url.Action("Hoatdongdahuy", new { Page = Page }))
+    </div>
+</div>
+<style>
+    #txtTimKiem {
+        float: left;
+        width: 500px;
+        height: 27px;
+        margin-bottom: -26px;
+    }
+
+    #buttontk {
+        float: left;
+        margin-left: 470px;
+    }
+
+    .icon img {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+</style>

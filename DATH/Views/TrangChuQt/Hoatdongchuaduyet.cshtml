@@ -1,0 +1,425 @@
+﻿@using DATH.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<HoatDong>
+
+@{
+    ViewBag.Title = "Hoatdongchuaduyet";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<script src="//cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+
+<h2 style="margin-top:30px">Quản lý hoạt động chưa duyệt</h2>
+
+<div style="margin-top:30px">
+    <div id="txtTimKiem">
+        @using (Html.BeginForm("KetQuaTimKiem", "TrangChuQt", FormMethod.Post))
+        {
+            @Html.TextBox("txtTimKiem", "", htmlAttributes: new { @class = "TextBoxTimKiem", @placeholder = "Nhập vào từ khóa cần tìm" })
+
+            @*Chèn button và ảnh*@
+            <div id="buttontk">
+                <button type="submit"><i class="icon-search"></i></button>
+            </div>
+        }
+    </div>
+</div>
+@foreach (var item in Model)
+{
+    <div class="row" style="margin-top:65px;margin-left:1px">
+        <div class="col">
+            <div class="info-box-2 bg-teal hover-expand">
+                <div class="icon">
+                    <img onclick="EditSurvice(@item.IdHoatDong)" style="width:80px;height:80px;margin-top:10px;margin-left:8px" src="~/Images/@item.HinhAnh" alt="Image">
+                </div>
+                <div class="content" style="margin-left:15px">
+                    <div onclick="EditSurvice(@item.IdHoatDong)" class="number">@Html.DisplayFor(modelItem => item.TenHoatDong) (@Html.DisplayFor(modelItem => item.SLDaDangKi)/@Html.DisplayFor(modelItem => item.GioiHanNguoiThamGia))</div>
+                    <div class="text">
+                        Người tạo : @Html.DisplayFor(modelItem => item.NguoiDung.Ho_Ten)
+                        @if (@item.TrangThai == "dd")
+                        {
+                            <div style="margin-left:500px;margin-top:-18px;color:blue">@Html.DisplayFor(modelItem => item.TrangThai)</div>
+                        }
+                        else if (@item.TrangThai == "cd")
+                        {
+                            <div onclick="Xetduyet(@item.IdHoatDong)" style="cursor:pointer;margin-left:500px;margin-top:-18px;color:orange">Chưa xem</div>
+                        }
+                        else if (@item.TrangThai == "ccs")
+                        {
+                            <div style="margin-left:500px;margin-top:-18px;color:green">@Html.DisplayFor(modelItem => item.TrangThai)</div>
+                        }
+                        else
+                        {
+                            <div style="margin-left:500px;margin-top:-18px;color:red">@Html.DisplayFor(modelItem => item.TrangThai)</div>
+                        }
+                    </div>
+                    <div class="text"> Bắt đầu : @Html.DisplayFor(modelItem => item.ThoiGianBD)  -  Kết thúc : @Html.DisplayFor(modelItem => item.ThoiGianKT)</div>
+                    <ul style="margin-left:600px;margin-top:-48px" id="in">
+                        <li><a style="text-decoration:none;cursor:pointer" onclick="EditSurvice(@item.IdHoatDong)"><img style="width:35px;height:35px" src="https://img.icons8.com/cute-clipart/50/000000/details-pane.png"></a></li>
+                        <li><a style="cursor:pointer" href="@Url.Action("ChinhSua", "TrangChuQt",new RouteValueDictionary(new { @id = item.IdHoatDong }))" @*onclick="EditSurviceCN(@item.IdHoatDong)"*@><img style="width:35px;height:35px" src="https://img.icons8.com/plasticine/100/000000/edit.png"></a></li>
+                        <li><a onclick="Delete(@item.IdHoatDong)" style="cursor:pointer"><img style="width:35px;height:35px" src="https://img.icons8.com/flat_round/64/000000/delete-sign.png"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="create-service-model" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết hoạt động</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    @*<div>
+                            <label class="col-form-label">Mã quyền</label>
+                            <input type="text" class="form-control" name="NAME">
+                        </div>
+
+                        <div>
+                            <label class="col-form-label">Tên quyền</label>
+                            <input type="text" class="form-control" name="DESCRIPTION">
+                        </div>*@
+                    <div>
+                        <h1 style="color:black;font-weight:400" name="NAME2"><b></b></h1>
+                    </div>
+                    <div id="chitiethoatdong">
+                        <p>Đơn vị tổ chức: <strong style="color:black;font-size:15px" name="DONVITOCHUC2"></strong></p>
+                        <p>Người tạo hoạt động: <strong style="color:black;font-size:15px" name="NGUOITAO2"></strong></p>
+                        <p>Thời gian tạo: <strong style="color:black;font-size:15px" name="THOIGIANTAO2"></strong></p>
+                        <p>
+                            Thời gian: <strong style="color:black;font-size:15px" name="THOIGIANBATDAU2"></strong>
+                            - <strong style="color:black;font-size:15px" name="THOIGIANKETTHUC2"> </strong>
+                        </p>
+                        <p>Địa điểm: <strong style="color:black;font-size:15px" name="DIADIEM2"></strong></p>
+                        <p>Giới hạn người tham gia: <strong style="color:black;font-size:15px" name="GIOIHAN2"></strong></p>
+                        <p>Số lượng đã đăng ký: <strong style="color:black;font-size:15px" name="SLDADANGKY2"></strong></p>
+                        <p>Nội dung chỉnh sửa: <strong style="color:black;font-size:15px" name="NDCS2"></strong></p>
+                    </div>
+                    <br />
+                    <strong style="margin-right:35px" name="DESCRIPTION2"></strong>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*--Modal dialog--*@
+<div id="create-service-model3" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật hoạt động</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Hình ảnh</label>
+                        <input type="file" class="form-control" name="HINHANH3">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên hoạt động</label>
+                        <input type="text" class="form-control" name="NAME3">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Địa điểm</label>
+                        <input type="text" class="form-control" name="DIADIEM3">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Thời gian bắt đầu</label>
+                        <input type="date" class="form-control" name="THOIGIANBATDAU3">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Thời gian kết thúc</label>
+                        <input type="date" class="form-control" name="THOIGIANKETTHUC3">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Giới hạn người tham gia</label>
+                        <input type="text" class="form-control" name="GIOIHAN3">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Đơn vị tổ chức</label>
+                        <input type="text" class="form-control" name="DONVITOCHUC3">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Mô tả chính</label>
+                        <textarea name="MOTACHINH3" id="ten"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Nội dung chỉnh sửa</label>
+                        <textarea name="NDCHINHSUA3" id="ndchinh"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo3()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model1" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn sẽ xóa hoạt động: <strong name="TENQ"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteInfo()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model4" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn muốn xét duyệt hoạt động: <strong name="TENQ1"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="Xetduyethd()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    CKEDITOR.replace('ten');
+    CKEDITOR.replace('ndchinh');
+    function Xetduyethd() {
+        $.ajax({
+            url: '/TrangChuQt/DuyetHd',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdHoatDong: Idhd,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Xetduyet(id) {
+        Idhd = id;
+
+        $.ajax({
+            url: '/TrangChuQt/GetHoatdong/' + Idhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idhd
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='TENQ1']").text(json.NAME);
+            $("[name='ID']").text(json.ID);
+            $('#create-service-model4').modal("show");
+        });
+    }
+
+    function SaveInfo3() {
+        //var ha = $("[name='HINHANH3']").val();
+        var name = $("[name='NAME3']").val();
+        var donvi = $("[name='DONVITOCHUC3']").val();
+        var bd = $("[name='THOIGIANBATDAU3']").val();
+        var kt = $("[name='THOIGIANKETTHUC3']").val();
+        var diadiem = $("[name='DIADIEM3']").val();
+        var gioihan = $("[name='GIOIHAN3']").val();
+        var ndcs = $("[name='NDCHINHSUA3']").val();
+        var mt = $("[name='MOTACHINH3']").val();
+
+        $.ajax({
+            url: '/TrangchuQt/Edit',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdHoatDong: Idhd,
+                TenHoatDong: name,
+                MoTaChinh: mt,
+                ThoiGianDienRa: bd,
+                ThoiGianKetThuc: kt,
+                GioiHanNguoiThamGia: gioihan,
+                NoiDungChinhSua: ndcs,
+                IdDonViToChuc: donvi,
+                Diadiem: diadiem
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function EditSurviceCN(id) {
+        Idhd = id;
+
+        $.ajax({
+            url: '/TrangchuQt/GetHoatdong/' + Idhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idhd,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+
+            //$("[name='HINHANH']").val(json.HINHANH);
+
+            $("[name='NAME3']").val(json.NAME);
+            $("[name='DONVITOCHUC3']").val(json.DONVITOCHUC);
+            $("[name='NGUOITAO3']").val(json.NGUOITAO);
+            $("[name='THOIGIANBATDAU3']").val(json.THOIGIANBATDAU);
+            $("[name='THOIGIANKETTHUC3']").val(json.THOIGIANKETTHUC);
+            $("[name='DIADIEM3']").val(json.DIADIEM);
+            $("[name='GIOIHAN3']").val(json.GIOIHAN);
+            $("[name='NDCHINHSUA3']").val(json.NDCHINHSUA);
+            $("[name='MOTACHINH3']").val(json.MOTACHINH);
+            $('#create-service-model3').modal("show");
+        });
+    }
+
+    function DeleteInfo() {
+        $.ajax({
+            url: '/TrangChuQt/DeleteHoatdong',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdHoatDong: Idhd
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delete(id) {
+        Idhd = id;
+
+        $.ajax({
+            url: '/TrangChuQt/GetHoatdong/' + Idhd,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Idhd,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='TENQ']").text(json.NAME);
+            $('#create-service-model1').modal("show");
+        });
+    }
+
+    function EditSurvice(id1) {
+        IdHoatdong1 = id1;
+
+        $.ajax({
+            url: '/TrangchuQt/GetHoatdong1/' + IdHoatdong1,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id1: IdHoatdong1,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+
+            $("[name='NAME2']").text(json.NAME);
+            $("[name='DONVITOCHUC2']").text(json.DONVITOCHUC);
+            $("[name='NGUOITAO2']").text(json.NGUOITAO);
+            $("[name='THOIGIANTAO2']").text(json.THOIGIANTAO);
+            $("[name='THOIGIANBATDAU2']").text(json.THOIGIANBATDAU);
+            $("[name='THOIGIANKETTHUC2']").text(json.THOIGIANKETTHUC);
+            $("[name='DIADIEM2']").text(json.DIADIEM);
+            $("[name='GIOIHAN2']").text(json.GIOIHAN);
+            $("[name='SLDADANGKY2']").text(json.SLDADANGKY);
+            $("[name='DESCRIPTION2']").html(json.MOTACHINH);
+            $("[name='NDCS2']").html(json.NDCHINHSUA);
+            $('#create-service-model').modal("show");
+        });
+    }
+</script>
+
+<div id="trang">
+    <h3>Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount</h3>
+    <div class="sotrang">
+        @Html.PagedListPager(Model, Page => Url.Action("Hoatdongchuaduyet", new { Page = Page }))
+    </div>
+</div>
+<style>
+    #txtTimKiem {
+        float: left;
+        width: 500px;
+        height: 27px;
+        margin-bottom: -26px;
+    }
+
+    #buttontk {
+        float: left;
+        margin-left: 470px;
+    }
+
+    .icon img {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    #in li{
+        display:inline-block;
+        margin-left:8px
+    }
+</style>

@@ -1,0 +1,27 @@
+﻿@model DATH.Models.Lop
+
+@{
+    ViewBag.Title = "ThemMoi";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2>Thêm lớp</h2>
+<p style="font-size:11px">Quản lý lớp/Thêm lớp</p>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <p>Tên lớp</p>
+        <p>@Html.EditorFor(model => model.TenLop, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <input id="btntao" type="submit" value="Tạo" />
+    </div>
+}
+
+<style>
+    #btntao:hover {
+        background-color: #0094ff;
+    }
+</style>

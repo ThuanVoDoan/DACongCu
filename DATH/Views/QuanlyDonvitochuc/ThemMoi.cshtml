@@ -1,0 +1,32 @@
+﻿@model DATH.Models.DonViToChuc
+
+@{
+    ViewBag.Title = "ThemMoi";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2>Thêm đơn vị tổ chức</h2>
+<p style="font-size:11px">Quản lý đơn vị tổ chức/Thêm mới</p>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <p>Mã đơn vị tổ chức</p>
+        <p>@Html.EditorFor(model => model.MaDonVi, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <p>Tên đơn vị tổ chức</p>
+        <p>@Html.EditorFor(model => model.TenDonVi, new { htmlAttributes = new { @class = "form-control" } })</p>
+    </div>
+
+    <div style="margin-top:10px">
+        <input id="btntao" type="submit" value="Tạo" />
+    </div>
+}
+
+<style>
+    #btntao:hover {
+        background-color: #0094ff;
+    }
+</style>

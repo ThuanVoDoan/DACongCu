@@ -1,0 +1,187 @@
+﻿div#SanPham{
+    float:left;
+    width:160px;/*khoảng cách giữa các sản phẩm*/
+    margin-left:9%;
+}
+
+div#SanPham img{
+    width:200px;
+    height:130px;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+}
+
+#ThongTin{
+    /*border:1px solid rgba(0,0,0,.2);*/
+    /*padding:0 15px 15px 15px;*/
+    width:200px;
+    font-family:'Segoe UI';
+}
+
+#TenSach{
+    font-size:17px;
+    font-weight:600;
+    width:210px;
+    height:50px;
+    color:black;
+    margin-left:0px;
+    margin-top:-7px;
+}
+
+#thoigian{
+    font-family:VNI-Times;
+    font-size:10px;
+    font-weight:400;
+    height:50px;
+    color:black;
+    margin-left:0px;
+    margin-top:-5px;
+}
+
+#DonGia{
+    padding:5px;
+    font-size:13pt;
+    border-top:1px solid rgba(0,0,0,.2);
+    color:black;
+   
+}
+
+#divBody{
+    margin-top:20px;
+}
+
+#hoatdong{
+    margin-left:165px;
+    width:150px;
+    color:blue;
+    font-size:25px
+}
+
+#hoatdong1{
+    margin-left:165px;
+    width:350px;
+    color:blue;
+    font-size:25px
+}
+
+#btnGH{
+    font-size:15px
+}
+
+input#btnGH:hover{
+    color:red;
+}
+
+#table{
+    border:1;
+    margin-top:30px;
+    margin-left:170px;
+}
+
+#table th{
+    padding-right:50px;
+    font-family:Tahoma;
+    border:double;
+     font-size:larger;
+     color:brown;
+     text-align:center
+}
+
+#table td{
+    border:outset;
+    text-align:center;
+    color:black
+}
+
+#Slt{
+    color:red;
+    margin-left:850px;
+    margin-top:15px;
+   
+}
+
+#ChiTiet {
+    margin-left:200px;
+    margin-top:-190px;
+    color:black;
+}
+
+#ha{
+    margin-left:20px;
+    margin-top:50px;
+}
+
+#ha img{
+    width:130px;
+    height:180px;
+}
+
+#b{
+    margin-left:200px;
+    color:black;
+}
+
+#th{
+    margin-top:-20px;
+    font-size:15px;
+}
+
+input#th:hover{
+   color:red
+}
+
+#sl{
+    width:100px;
+    height:20px;
+}
+
+#xoa{
+    margin-left:10px;
+}
+
+a#xoa:hover{
+ color:orangered
+}
+
+#chitietsach{
+    margin-left:10px;
+}
+
+a#chitietsach:hover{
+ color:orangered
+}
+
+input#txtSoLuong:hover{
+    color:orangered;
+}
+
+.sotrang li{
+    display:inline;
+    /*border:1px solid rgba(0,0,0,.2);
+    width:50px*/
+}
+
+
+
+#trang{
+    color:black;
+    margin-left:115px;
+}
+
+input#dh:hover{
+    color:dodgerblue
+}
+
+#menuhd li{
+    display:inline;
+    margin-left:10px;
+    color:black;
+    font-weight:600;
+}
+#menuhd{
+    margin-bottom:10px;
+}
+
+ 

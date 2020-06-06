@@ -1,0 +1,99 @@
+﻿@model IEnumerable<DATH.Models.DangKiThamGiaHD>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+<h2>Quản lý giấy chứng nhận</h2>
+<!-- Exportable Table -->
+<div class="row clearfix" style="margin-top:30px">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2></h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    Lớp
+                                </th>
+                                <th>
+                                    MSSV
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.HoatDong.TenHoatDong)
+                                </th>
+                                <th>
+                                    Lấy chứng nhận
+                                </th>
+                                <th>
+                                    Chứng nhận
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    Lớp
+                                </th>
+                                <th>
+                                    MSSV
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.HoatDong.TenHoatDong)
+                                </th>
+                                <th>
+                                    Lấy chứng nhận
+                                </th>
+                                <th>
+                                    Chứng nhận
+                                </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NguoiDung.Lop.TenLop)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NguoiDung.SoId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.HoatDong.TenHoatDong)
+                                    </td>
+                                    <td>
+                                        @if (item.LayCn == true)
+                                        {
+                                            @Html.CheckBox("t", true)
+                                        }
+                                        else if (item.LayCn == false)
+                                        {
+                                            @Html.CheckBox("f", false)
+                                        }
+                                    </td>
+                                    <td>
+                                        <a style="cursor:pointer" href="@Url.Action("InChungNhan", "DsSinhvienTheohd",new RouteValueDictionary(new { @id = item.IdDangKiHD }))">Xem</a>
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->

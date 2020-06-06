@@ -1,0 +1,160 @@
+﻿@model DATH.Models.HoatDong
+
+@{
+    ViewBag.Title = "XemChiTiet";
+    Layout = "~/Views/LayOut/NguoidungLayout.cshtml";
+}
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@600&display=swap" rel="stylesheet">
+<hr />
+
+<div style="margin-left:140px;width:980px;margin-top:-10px">
+    <div>
+        <h1 style="color:black;font-weight:400"><b>@Model.TenHoatDong  </b></h1>
+        <p hidden id="idhoatdong" name="idhd">@ViewBag.idhd</p>
+        <div style="margin-top:-30px;margin-left:150px">
+            @if (ViewBag.b == ViewBag.c)
+            {
+                <div style="width:210px;margin-left:700px;text-align:center">
+                    <p style="color:black">@ViewBag.a</p>
+                </div>
+            }
+            else
+            {
+                if (ViewBag.dangky == "Đăng ký")
+                {
+                    <div style="background-color:#2968C1;width:120px;margin-left:700px;text-align:center">
+                        <a style="cursor:pointer" class="dk" onclick="Add(@Model.IdHoatDong)">Đăng ký</a>
+                    </div>
+                }
+                else
+                {
+                    <div style="width:120px;margin-left:700px;text-align:center">
+                        <p style="color:black">Đã đăng ký</p>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+    <div id="chitiethoatdong">
+        <p><b><strong class="bd" style="color:black;font-size:20px">Bắt đầu:</strong>
+           </b> <strong class="bd" style="color:black;font-size:14px">@Html.DisplayFor(Model => Model.ThoiGianBD)</strong> 
+            <b>
+            <strong class="bd" style="color:black;margin-left:30px;font-size:20px">Kết thúc:</strong>
+            </b> <strong class="bd" style="color:black;font-size:14px">@Html.DisplayFor(Model => Model.ThoiGianKT)</strong></p>
+        <p style="margin-top:-20px"><b><strong class="bd" style="color:black;font-size:20px">Đã đăng ký:</strong></b> <strong class="bd" style="color:black;font-size:14px">@ViewBag.b/@ViewBag.c</strong></p>
+        <p style="margin-top:-20px"><b><strong class="bd" style="color:black;font-size:20px">Địa điểm:</strong></b> <strong class="bd" style="color:black;font-size:14px">@Html.DisplayFor(Model => Model.Diadiem)</strong></p>
+    </div>
+    <p style="margin-right:35px"><strong style="color:black">@Html.Raw(Model.MoTaChinh)</strong></p>
+</div>
+<hr />
+<dialog id="hopthoai" @*style="margin-top:-3850px"*@>
+    <h2>Thông báo</h2>
+    <div>
+        <p>Bạn muốn đăng ký hoạt động: <strong name="NAME"></strong></p>
+    </div>
+    <div>
+        <ul id="ht">
+            <li><button class="btnht" onclick="a()">Hủy</button></li>
+            <li><button class="btnht" onclick="SaveInfo()">Đồng ý</button></li>
+        </ul>
+    </div>
+</dialog>
+
+<script>
+
+    var iddk = 0;
+
+    function a() {
+        var x = document.getElementById("hopthoai");
+        x.open = false;
+    }
+
+    function SaveInfo() {
+        //var idhd = $("#idhoatdong").text();
+        $.ajax({
+            url: '/TrangChu/Add/',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdHoatDong: Iddkhd,
+                IdDangKiHD : iddk,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+        function Add(id) {
+            Iddkhd = id;
+            var x = document.getElementById("hopthoai");
+            $.ajax({
+                url: '/TrangChu/Get/' + Iddkhd,
+                type: 'POST',
+                dataType: 'text',
+                data: {
+                    id: Iddkhd,
+                }
+            }).done(function (ketqua) {
+                var json = JSON.parse(ketqua);
+                $("[name='NAME']").text(json.NAME);
+                x.open = true;
+            });
+        }
+</script>
+<style>
+    #slider {
+        display: none;
+    }
+
+    .dk{
+        color:white;
+    }
+
+    .dk:hover{
+        text-decoration:none;
+        color:black
+    }
+
+    #chitiethoatdong {
+        font-size: 18px;
+        /*font-family: 'Tangerine', serif;*/
+        margin-top:4px;
+    }
+
+    #hopthoai{
+        width:500px;
+        position:absolute;
+        left:0px;
+        top:169px
+    }
+
+    #ht li {
+        display: inline-block;
+        text-decoration: none;
+        margin-left: 70px;
+    }
+
+    .btnht {
+        width: 100px;
+        height: 35px;
+        font-size: 12px;
+        padding: 10px 24px;
+        border-radius: 12px;
+    }
+
+    .btnht:hover {
+        background-color: #2968c1;
+    }
+
+    .bd{
+        font-family: 'Oswald', sans-serif;
+    }
+
+</style>
+

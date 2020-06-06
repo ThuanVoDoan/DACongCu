@@ -1,0 +1,72 @@
+﻿@model IEnumerable<IGrouping<int?, DATH.Models.Rel_CV_Q>>
+
+@{
+    ViewBag.Title = "Index1";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2>Quản lý quyền - phân quyền</h2>
+
+<!-- Exportable Table -->
+<div class="row clearfix" style="margin-top:30px">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2></h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table id="table_id" class="table table-bordered table-striped table-hover dataTable js-exportable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    STT
+                                </th>
+                                <th>Tên quyền</th>
+@foreach (var chucvu in Model.SelectMany(c => c).Select(c => c.ChucVu).Distinct().OrderBy(c => c.TenChucVu))
+{
+                                <th>@chucvu.TenChucVu</th>
+                                }
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    STT
+                                </th>
+                                <th>Tên quyền</th>
+                                @foreach (var chucvu in Model.SelectMany(c => c).Select(c => c.ChucVu).Distinct().OrderBy(c=>c.TenChucVu))
+                                {
+                                    <th>@chucvu.TenChucVu</th>
+                                }
+                                <th>
+                                </th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var quyen in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td style="cursor:pointer" onclick="EditSurvice(@quyen.Key)">
+                                        @Html.Raw((quyen.FirstOrDefault() == null) ? "Không tìm thấy" : quyen.FirstOrDefault().Quyen.TenQuyen)
+
+                                    </td>
+                                    @foreach (var chucvu in Model.SelectMany(c => c).Select(c => c.ChucVu).Distinct().OrderBy(c => c.TenChucVu))
+                                    {
+                                        <td>@Html.CheckBox("f", quyen.Select(c => c.ChucVu.IdChucVu).Contains(chucvu.IdChucVu))</td>
+                                    }
+                                    <td>
+                                        <a style="cursor:pointer" onclick="EditSurvice(@quyen.Key)"><img src="https://img.icons8.com/plasticine/100/000000/edit.png" style="width:35px;height:35px"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

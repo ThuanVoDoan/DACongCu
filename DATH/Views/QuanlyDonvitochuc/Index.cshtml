@@ -1,0 +1,255 @@
+﻿@model IEnumerable<DATH.Models.DonViToChuc>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/LayOut/QuantriLayout.cshtml";
+}
+
+<h2>Quản lý đơn vị tổ chức</h2>
+
+<p style="margin-top:30px">
+    <a style="cursor:pointer" onclick="Add()">Thêm mới</a>
+</p>
+
+<!-- Exportable Table -->
+<div class="row clearfix" style="margin-top:30px">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2></h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TenDonVi)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>STT</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TenDonVi)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TenDonVi)
+                                    </td>
+                                    <td>
+                                        <a style="cursor:pointer" onclick="EditSurvice(@item.IdDonViToChuc)"><img src="https://img.icons8.com/plasticine/100/000000/edit.png" style="width:35px;height:35px"></a>
+                                        <a style="cursor:pointer" onclick="Delete(@item.IdDonViToChuc)"><img src="https://img.icons8.com/flat_round/64/000000/delete-sign.png" style="width:35px;height:35px"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+@*--Modal dialog--*@
+<div id="create-service-model" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật đơn vị tổ chức</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Mã đơn vị tổ chức</label>
+                        <input type="text" class="form-control" name="DESCRIPTION">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên đơn vị tổ chức</label>
+                        <input type="text" class="form-control" name="NAME">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model1" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn sẽ xóa đơn vị tổ chức: <strong name="TENQ"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteInfo()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-service-model2" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm đơn vị tổ chức</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <label class="col-form-label">Mã đơn vị tổ chức</label>
+                        <input type="text" class="form-control" name="DESCRIPTION1">
+                    </div>
+
+                    <div>
+                        <label class="col-form-label">Tên đơn vị tổ chức</label>
+                        <input type="text" class="form-control" name="NAME1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="Save()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var Iddonvitochuc = 0;
+
+    function Add() {
+        $('#create-service-model2').modal("show");
+    }
+
+    function Save() {
+        var name = $("[name='NAME1']").val();
+        var description = $("[name='DESCRIPTION1']").val();
+        $.ajax({
+            url: '/QuanlyDonvitochuc/AddDonvitochuc',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdDonViToChuc: Iddonvitochuc,
+                TenDonVi: name,
+                MaDonVi: description,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function SaveInfo() {
+        var name = $("[name='NAME']").val();
+        var description = $("[name='DESCRIPTION']").val();
+        $.ajax({
+            url: '/QuanlyDonvitochuc/EditDonvitochuc',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdDonViToChuc: Iddonvitochuc,
+                TenDonVi: name,
+                MaDonVi: description,
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function DeleteInfo() {
+        $.ajax({
+            url: '/QuanlyDonvitochuc/DeleteDonvitochuc',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdDonViToChuc: Iddonvitochuc
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delete(id) {
+        Iddonvitochuc = id;
+
+        $.ajax({
+            url: '/QuanlyDonvitochuc/GetDonvitochuc/' + Iddonvitochuc,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Iddonvitochuc,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='TENQ']").text(json.NAME);
+            $('#create-service-model1').modal("show");
+        });
+    }
+
+    function EditSurvice(id) {
+        Iddonvitochuc = id;
+
+        $.ajax({
+            url: '/QuanlyDonvitochuc/GetDonvitochuc/' + Iddonvitochuc,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: Iddonvitochuc,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='NAME']").val(json.NAME);
+            $("[name='DESCRIPTION']").val(json.DESCRIPTION);
+            $('#create-service-model').modal("show");
+        });
+
+
+    }
+</script>
