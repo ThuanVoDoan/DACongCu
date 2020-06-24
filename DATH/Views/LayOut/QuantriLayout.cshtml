@@ -143,12 +143,12 @@
                             <span>Đơn vị tổ chức</span>
                         </a>
                     </li>
-                    <li>
+                    @*<li>
                         <a href="@Url.Action("Index","QuanlyGiaycn")">
                             <i class="material-icons">pie_chart</i>
                             <span>Giấy chứng nhận</span>
                         </a>
-                    </li>
+                    </li>*@
                     <li>
                         <a href="@Url.Action("Index","QuanlyQuyen")">
                             <i class="material-icons">pie_chart</i>
@@ -156,21 +156,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Index","QuanlyPhanQuyen")">
-                            <i class="material-icons">map</i>
-                            <span>Phân quyền</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="@Url.Action("Index","QuanlyQuyen_Phanquyen")">
                             <i class="material-icons">map</i>
-                            <span>Quyền - phân quyền</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Background","TrangChu")">
-                            <i class="material-icons">map</i>
-                            <span>Background</span>
+                            <span>Phân quyền</span>
                         </a>
                     </li>
                     <li class="header">Thống kê theo tính chất</li>
@@ -201,7 +189,7 @@
                     <li class="header">Thống kê theo thời gian</li>
                     <li>
                         <a href="@Url.Action("Hoatdongchuadienra","TrangChuQt")">
-                            <i class="material-icons col-light-blue">donut_large</i>
+                            <i class="material-icons col-orange">donut_large</i>
                             <span>Hoạt động sắp diễn ra</span>
                         </a>
                     </li>

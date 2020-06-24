@@ -157,7 +157,7 @@ namespace DATH.Controllers.Quantri
             var a  = new SelectList(db.Lops.ToList().OrderBy(n => n.IdLop), "IdLop", "TenLop", position.IdLop);
             return new JsonResult()
             {
-                Data = new {CV = position.IdChucVu ,MASO = position.SoId, NAME = position.Ho_Ten, SDT = position.SDT, LOP = position.IdLop, TAIKHOAN = position.TaiKhoan, MATKHAU = position.MatKhau, SE = a  },
+                Data = new {CV = position.IdChucVu ,MASO = position.SoId, NAME = position.Ho_Ten, SDT = position.SDT, LOP = position.Lop.TenLop.Trim(), IdLop = position.IdLop, TAIKHOAN = position.TaiKhoan, MATKHAU = position.MatKhau, SE = a  },
                 JsonRequestBehavior = JsonRequestBehavior.DenyGet
             };
         }
@@ -191,7 +191,7 @@ namespace DATH.Controllers.Quantri
         }
 
         [HttpPost]
-        public string Edit(NguoiDung position, string pass)
+        public string Edit(NguoiDung position, string Tenlop)
         {
             NguoiDung nd = (NguoiDung)Session["Taikhoan"];
             List<Rel_CV_Q> re = db.Rel_CV_Qs.OrderBy(n => n.IdChucVu).Where(n => n.IdChucVu == nd.IdChucVu).ToList();
@@ -200,25 +200,20 @@ namespace DATH.Controllers.Quantri
                 if (nd != null && a.Quyen.MoTa == "sttsv")
                 {
                     NguoiDung p = db.NguoiDungs.SingleOrDefault(n => n.IdInfo == position.IdInfo);
-                    MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-
-                    byte[] bHash = md5.ComputeHash(Encoding.UTF8.GetBytes(pass));
-
-                    StringBuilder sbHash = new StringBuilder();
-
-                    foreach (byte b in bHash)
-                    {
-
-                        sbHash.Append(String.Format("{0:x2}", b));
-
-                    }
-                    pass = sbHash.ToString();
-                    p.MatKhau = pass;
-                    ViewBag.idlop = new SelectList(db.Lops.ToList().OrderBy(n => n.IdLop), "IdLop", "TenLop", position.IdLop);
+                    List<Lop> lstsv = db.Lops.ToList();
                     try
                     {
-                        UpdateModel(p);
-                        db.SubmitChanges();
+                        foreach (var fi in lstsv)
+                        {
+                            if (fi.TenLop.Trim().Equals(Tenlop.Trim()))
+                            {
+                                p.IdLop = fi.IdLop;
+                                UpdateModel(p);
+                                db.SubmitChanges();
+                            }
+                        }
+                        //UpdateModel(p);
+                        //db.SubmitChanges();
                     }
                     catch (Exception ex)
                     {

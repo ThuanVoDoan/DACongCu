@@ -5,7 +5,7 @@
     Layout = "~/Views/LayOut/QuantriLayout.cshtml";
 }
 
-<h2>Quản lý quyền - phân quyền</h2>
+<h2>Quản lý phân quyền</h2>
 
 <!-- Exportable Table -->
 <div class="row clearfix" style="margin-top:30px">
@@ -27,8 +27,6 @@
                                 {
                                     <th>@chucvu.TenChucVu</th>
                                 }
-                                <th>
-                                </th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -41,26 +39,24 @@
                                 {
                                     <th>@chucvu.TenChucVu</th>
                                 }
-                                <th>
-                                </th>
                             </tr>
                         </tfoot>
                         <tbody>
                             @foreach (var quyen in Model)
                             {
+                                int idQuyen = quyen.FirstOrDefault().IdQuyen ?? 0;
+                              
                                 <tr>
                                     <td></td>
-                                    <td style="cursor:pointer" onclick="EditSurvice(@quyen.Key)">
+                                    <td>
                                         @Html.Raw((quyen.FirstOrDefault() == null) ? "Không tìm thấy" : quyen.FirstOrDefault().Quyen.TenQuyen)
 
                                     </td>
                                     @foreach (var chucvu in Model.SelectMany(c => c).Select(c => c.ChucVu).Distinct().OrderBy(c => c.TenChucVu))
                                     {
-                                        <td>@Html.CheckBox("f", quyen.Select(c => c.ChucVu.IdChucVu).Contains(chucvu.IdChucVu))</td>
+                                        int idChucVu = chucvu.IdChucVu;
+                                        <td onclick="ChinhSua(@idQuyen,@idChucVu)">@Html.CheckBox("f", quyen.Select(c => c.ChucVu.IdChucVu).Contains(chucvu.IdChucVu))</td>
                                     }
-                                    <td>
-                                        <a style="cursor:pointer" onclick="EditSurvice(@quyen.Key)"><img src="https://img.icons8.com/plasticine/100/000000/edit.png" style="width:35px;height:35px"></a>
-                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -71,40 +67,83 @@
     </div>
 </div>
 
-<script>
-    function SaveInfo() {
-        var name = $("[name='NAME']").val();
-        $.ajax({
-            url: '/QuanlyQuyen/EditQuyen',
-            type: 'POST',
-            dataType: 'text',
-            data: {
-                IdQuyen: IdQuyen,
-                TenQuyen: name,
-            }
-        }).done(function (ketqua) {
-            if (ketqua == "ok") {
-                alert("Lưu dữ liệu thành công");
-                location.reload();
-                return;
-            }
-            alert(ketqua);
-        });
-    }
-    function EditSurvice(id) {
-        IdQuyen = id;
+<div id="create-service-model1" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <p>Bạn sẽ xóa phân quyền: <strong name="TENCV"></strong> - <strong name="TENQ"></strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteInfo()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    function ChinhSua(idQuyen, idChucVu) {
         $.ajax({
-            url: '/QuanlyQuyen/GetQuyen/' + IdQuyen,
+            url: '/QuanlyPhanQuyen/ChinhSuaQuyen',
             type: 'POST',
             dataType: 'text',
             data: {
-                id: IdQuyen,
+                idQuyen, idChucVu
             }
         }).done(function (ketqua) {
             var json = JSON.parse(ketqua);
-            $("[name='NAME']").val(json.NAME);
-            $('#create-service-model').modal("show");
+            if (json.Success == false) {
+                alert("Không thể xử lý");
+                return;
+            }
+            if (json.Success == true) {
+                alert("Cập nhật thành công");
+                return;
+            }
         });
+    }
+    function Delete(id) {
+        Idpq = id;
+
+
+        //$.ajax({
+        //    url: '/QuanlyPhanQuyen/GetPhanquyen/' + Idpq,
+        //    type: 'POST',
+        //    dataType: 'text',
+        //    data: {
+        //        id: Idpq,
+        //    }
+        //}).done(function (ketqua) {
+        //    var json = JSON.parse(ketqua);
+        //    $("[name='TENCV']").text(json.NAME);
+        //    $("[name='TENQ']").text(json.DESCRIPTION);
+        //    $('#create-service-model1').modal("show");
+        //});
+
+        //$.ajax({
+        //    url: '/QuanlyPhanQuyen/DeletePhanquyen',
+        //    type: 'POST',
+        //    dataType: 'text',
+        //    data: {
+        //        IdCV_Q: Idpq
+        //    }
+        //}).done(function (ketqua) {
+        //    if (ketqua == "ok") {
+        //        alert("Xóa thành công");
+        //        location.reload();
+        //        return;
+        //    }
+        //    alert(ketqua);
+        //});
     }
 </script>

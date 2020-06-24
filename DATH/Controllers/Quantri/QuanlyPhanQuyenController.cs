@@ -84,6 +84,42 @@ namespace DATH.Controllers.Quantri
             }
         }
 
+
+        public JsonResult ChinhSuaQuyen(int idChucVu, int idQuyen)
+        {
+            try
+            {
+                var position = db.Rel_CV_Qs.Where(x => x.IdChucVu == idChucVu && x.IdQuyen == idQuyen).FirstOrDefault();
+                if (position == null)
+                {
+                    Rel_CV_Q p = new Rel_CV_Q();
+                    p.XoaTam = false;
+                    p.IdQuyen = idQuyen;
+                    p.IdChucVu = idChucVu;
+                    db.Rel_CV_Qs.InsertOnSubmit(p);
+                  
+                }
+                else
+                {
+                    db.Rel_CV_Qs.DeleteOnSubmit(position);
+                }
+                db.SubmitChanges();
+            }
+            catch
+            {
+                return new JsonResult()
+                {
+                    Data = new { Success = false },
+                    JsonRequestBehavior = JsonRequestBehavior.DenyGet
+                };
+            }
+            return new JsonResult()
+            {
+                Data = new { Success = true },
+                JsonRequestBehavior = JsonRequestBehavior.DenyGet
+            };
+        }
+
         public JsonResult GetPhanquyen(int id)
         {
             var position = db.Rel_CV_Qs.Where(x => x.IdCV_Q == id).FirstOrDefault();
@@ -132,11 +168,10 @@ namespace DATH.Controllers.Quantri
                 if (nd != null && a.Quyen.MoTa == "xqcv")
                 {
                     Rel_CV_Q p = db.Rel_CV_Qs.SingleOrDefault(n => n.IdCV_Q == position.IdCV_Q);
-                    //p.XoaTam = true;
-
+                    List<Rel_CV_Q> mo = db.Rel_CV_Qs.OrderBy(n => n.IdChucVu).ToList();
                     try
                     {
-                        //UpdateModel(p);
+                        
                         db.Rel_CV_Qs.DeleteOnSubmit(p);
                         db.SubmitChanges();
                     }

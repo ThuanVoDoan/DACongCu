@@ -1995,7 +1995,6 @@
     <Content Include="Views\QuanlyGiaycn\Index.cshtml" />
     <Content Include="Views\TrangChuQt\Hoatdongchuadienra.cshtml" />
     <Content Include="Views\QuanlyQuyen_Phanquyen\Index.cshtml" />
-    <Content Include="Views\QuanlyQuyen_Phanquyen\Index1.cshtml" />
     <Content Include="Views\Login\DangXuat.cshtml" />
     <Content Include="Views\TrangChu\AnhTrangChu.cshtml" />
   </ItemGroup>

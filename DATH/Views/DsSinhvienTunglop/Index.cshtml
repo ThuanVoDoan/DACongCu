@@ -127,14 +127,7 @@
 
                     <div>
                         <label class="col-form-label">Lớp</label>
-                        @*<input type="text" class="form-control" name="LOP">*@
-                        <select>
-                            @foreach (var i in Model.ToList())
-                            {
-                                <option value="@i.IdLop">@i.Lop.TenLop</option>
-                            }
-                        </select>
-                        
+                        <input type="text" class="form-control" name="LOP">
                     </div>
 
                     <div>
@@ -279,7 +272,7 @@
         var lop = $("#idl").text();
 
         $.ajax({
-            url: '/DsSinhvienTunglop/Add' + pass,
+            url: '/DsSinhvienTunglop/Add',
             type: 'POST',
             dataType: 'text',
             data: {
@@ -316,7 +309,6 @@
             $("[name='MASO']").val(json.MASO);
             $("[name='SDT']").val(json.SDT);
             $("[name='LOP']").val(json.LOP);
-            //$("[name='LOP']").val(json.SE);
             $("[name='TAIKHOAN']").val(json.TAIKHOAN);
             $("[name='CV']").val(json.CV);
             if( json.CV == 3 ){
@@ -344,22 +336,22 @@
         var name = $("[name='NAME']").val();
         var maso = $("[name='MASO']").val();
         var sdt = $("[name='SDT']").val();
-        var lop = $("[name='LOP']").val();
         var taikhoan = $("[name='TAIKHOAN']").val();
         var cv = $("[name='CV']").val();
-        var pass = "";
+        var lop = $("[name='LOP']").val();
+        var Tenlop = "";
         $.ajax({
-            url: '/DsSinhvienTunglop/Edit' + pass,
+            url: '/DsSinhvienTunglop/Edit' + Tenlop,
             type: 'POST',
             dataType: 'text',
             data: {
+                Tenlop: lop,
                 IdInfo: Idsv,
                 SoId: maso,
                 Ho_Ten: name,
                 SDT: sdt,
                 IdChucVu : cv,
                 TaiKhoan: taikhoan,
-                IdLop:lop,
             }
         }).done(function (ketqua) {
             if (ketqua == "ok") {

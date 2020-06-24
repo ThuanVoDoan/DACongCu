@@ -100,7 +100,7 @@ namespace DATH.Controllers.Quantri
         }
 
         [HttpPost]
-        public string EditQuantri(NguoiDung position, string pass)
+        public string EditQuantri(NguoiDung position)
         {
             NguoiDung nd = (NguoiDung)Session["Taikhoan"];
             List<Rel_CV_Q> re = db.Rel_CV_Qs.OrderBy(n => n.IdChucVu).Where(n => n.IdChucVu == nd.IdChucVu).ToList();
@@ -110,26 +110,6 @@ namespace DATH.Controllers.Quantri
                 {
 
                     NguoiDung p = db.NguoiDungs.SingleOrDefault(n => n.IdInfo == position.IdInfo);
-                    MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-
-                    byte[] bHash = md5.ComputeHash(Encoding.UTF8.GetBytes(pass));
-
-                    StringBuilder sbHash = new StringBuilder();
-
-                    foreach (byte b in bHash)
-                    {
-
-                        sbHash.Append(String.Format("{0:x2}", b));
-
-                    }
-                    pass = sbHash.ToString();
-                    p.MatKhau = pass;
-                    //p.SoId = position.SoId;
-                    //p.Ho_Ten = position.Ho_Ten;
-                    //p.SDT = position.SDT;
-                    //p.IdChucVu = position.IdChucVu;
-                    //p.TaiKhoan = position.SoId;
-                    //p.MatKhau = position.MatKhau;
 
                     try
                     {
@@ -147,7 +127,7 @@ namespace DATH.Controllers.Quantri
         }
 
         [HttpPost]
-        public string AddQuantri(NguoiDung position, string pass)
+        public string AddQuantri(NguoiDung position)
         {
             NguoiDung nd = (NguoiDung)Session["Taikhoan"];
             List<Rel_CV_Q> re = db.Rel_CV_Qs.OrderBy(n => n.IdChucVu).Where(n => n.IdChucVu == nd.IdChucVu).ToList();
@@ -155,6 +135,7 @@ namespace DATH.Controllers.Quantri
             {
                 if (nd != null && a.Quyen.MoTa == "tqtv")
                 {
+                    string pass = "8888";
                     MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
 
                     byte[] bHash = md5.ComputeHash(Encoding.UTF8.GetBytes(pass));

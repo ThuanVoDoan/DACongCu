@@ -240,10 +240,10 @@
                         </select>
                     </div>
 
-                    <div>
+                    @*<div>
                         <label class="col-form-label">Mật khẩu</label>
                         <input type="password" class="form-control" name="MATKHAU2">
-                    </div>
+                    </div>*@
                 </form>
             </div>
             <div class="modal-footer">
@@ -291,15 +291,15 @@
         var maso = $("[name='MASO2']").val();
         var name = $("[name='NAME2']").val();
         var sdt = $("[name='SDT2']").val();
-        var matkhau = $("[name='MATKHAU2']").val();
+        //var matkhau = $("[name='MATKHAU2']").val();
         var chucvu = $("#myselect2").val();
-        var pass = "";
+        //var pass = "";
         $.ajax({
-            url: '/QuanlyQuantri/AddQuantri' + pass,
+            url: '/QuanlyQuantri/AddQuantri',
             type: 'POST',
             dataType: 'text',
             data: {
-                pass : matkhau,
+                //pass : matkhau,
                 IdInfo: Idqt,
                 SoId: maso,
                 Ho_Ten: name,
@@ -357,11 +357,10 @@
         var chucvu = $("#myselect1").val();
         var pass = "";
         $.ajax({
-            url: '/QuanlyQuantri/EditQuantri' + pass,
+            url: '/QuanlyQuantri/EditQuantri',
             type: 'POST',
             dataType: 'text',
             data: {
-                pass : matkhau,
                 IdInfo: Idqt,
                 SoId: maso,
                 Ho_Ten: name,
