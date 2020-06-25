@@ -136,12 +136,11 @@ namespace DATH.Controllers.Nguoidung
             {
                 
                 NguoiDung nd = (NguoiDung)Session["Taikhoan"];
-                List<Rel_CV_Q> re = db.Rel_CV_Qs.OrderBy(n => n.IdChucVu).Where(n => n.IdChucVu == nd.IdChucVu).ToList();
-                foreach (var a in re)
-                {
+                //List<Rel_CV_Q> re = db.Rel_CV_Qs.OrderBy(n => n.IdChucVu).Where(n => n.IdChucVu == nd.IdChucVu).ToList();
+                //foreach (var a in re)
+                //{
                     if (nd != null)
                     {
-                        //int id = Convert.ToInt32(Request.Form["idlop"]);
                         hd = db.HoatDongs.SingleOrDefault(n => n.IdHoatDong == hd.IdHoatDong);
                         hd.SLDaDangKi = hd.SLDaDangKi + 1;
 
@@ -155,6 +154,7 @@ namespace DATH.Controllers.Nguoidung
                             dk.IdInfo = nd.IdInfo;
                             dk.TrangThai = false;
                             dk.XoaTam = false;
+                            dk.LayCn = false;
                             db.DangKiThamGiaHDs.InsertOnSubmit(dk);
                             db.SubmitChanges();
                         }
@@ -163,8 +163,8 @@ namespace DATH.Controllers.Nguoidung
                             return ex.Message;
                         }
                         return "ok";
-                    }
-                }
+                   }
+                //}
             }
             
             return "Lỗi đăng ký";

@@ -49,11 +49,11 @@
                         Người tạo : @Html.DisplayFor(modelItem => item.NguoiDung.Ho_Ten)
                         @if (@item.TrangThai == "dd" && item.ThoiGianBD > DateTime.Now)
                             {
-                                <div id="dd" style="cursor:pointer;margin-left:500px;margin-top:-18px;color:blue">Đã duyệt</div>
+                                <div id="dd" style="cursor:pointer;margin-left:500px;margin-top:-18px;color:blue">Sắp diễn ra</div>
                             }
                             @if (@item.TrangThai == "dd" && item.ThoiGianKT < DateTime.Now)
                             {
-                                <div style="margin-left:500px;margin-top:-18px;color:red">dkt</div>
+                                <div style="margin-left:500px;margin-top:-18px;color:red">Đã kết thúc</div>
                             }
                             else if (@item.TrangThai == "cd")
                             {
@@ -69,14 +69,14 @@
                             }
                             else if (@item.TrangThai == "dd" && item.ThoiGianBD <= DateTime.Now && item.ThoiGianKT >= DateTime.Now)
                             {
-                                <div style="margin-left:500px;margin-top:-18px;color:blue">ddr</div>
+                                <div style="margin-left:500px;margin-top:-18px;color:blue">Đang diễn ra</div>
                             }
                     </div>
                     <div class="text"> Bắt đầu : @Html.DisplayFor(modelItem => item.ThoiGianBD)  -  Kết thúc : @Html.DisplayFor(modelItem => item.ThoiGianKT)</div>
                     <ul style="margin-left:600px;margin-top:-48px" id="in">
                         @if (@item.TrangThai == "dd" && item.ThoiGianBD > DateTime.Now)
                         {
-                            <li><a href="@Url.Action("Index", "DsSinhvienTheohd",new RouteValueDictionary(new { @id = item.IdHoatDong }))"><img src="https://img.icons8.com/dusk/64/000000/view-file.png" style="width:35px;height:35px"></a></li>
+                                <li><a href="@Url.Action("Index", "DsSinhvienTheohd",new RouteValueDictionary(new { @id = item.IdHoatDong }))"><img src="https://img.icons8.com/dusk/64/000000/view-file.png" style="width:35px;height:35px"></a></li>
                                 <li><a style="text-decoration:none;cursor:pointer" onclick="EditSurvice(@item.IdHoatDong)"><img style="width:35px;height:35px" src="https://img.icons8.com/cute-clipart/50/000000/details-pane.png"></a></li>
                                 <li><a style="cursor:pointer" href="@Url.Action("ChinhSua", "TrangChuQt",new RouteValueDictionary(new { @id = item.IdHoatDong }))" @*onclick="EditSurviceCN(@item.IdHoatDong)"*@><img style="width:35px;height:35px" src="https://img.icons8.com/plasticine/100/000000/edit.png"></a></li>
                                 <li><a onclick="Delete(@item.IdHoatDong)" style="cursor:pointer"><img style="width:35px;height:35px" src="https://img.icons8.com/flat_round/64/000000/delete-sign.png"></a></li>

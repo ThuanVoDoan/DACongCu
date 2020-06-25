@@ -138,7 +138,7 @@
 <div id="trang">
     <h3>Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount</h3>
     <div class="sotrang">
-        @Html.PagedListPager(Model, Page => Url.Action("Hoatdongdangdienra", new { Page = Page }))
+        @Html.PagedListPager(Model, Page => Url.Action("Hoatdongdaketthuc", new { Page = Page }))
     </div>
 </div>
 <style>

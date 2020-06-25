@@ -614,7 +614,7 @@ namespace DATH.Controllers.Quantri
                 {
                     if (nd != null && a.Quyen.MoTa == "xdshddd")
                     {
-                        return View(db.HoatDongs.OrderBy(n => n.ThoiGianT).Where(n=>(n.TrangThai == "dd") && (n.ThoiGianBD > DateTime.Now) && (n.XoaTam == false)).ToPagedList(pageNumber, pageSize));
+                        return View(db.HoatDongs.OrderBy(n => n.ThoiGianT).Where(n=>(n.TrangThai == "dd")  && (n.XoaTam == false)).ToPagedList(pageNumber, pageSize));
                     }
                 }
                 return RedirectToAction("Loi", "Login");

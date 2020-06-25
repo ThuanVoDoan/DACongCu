@@ -72,6 +72,7 @@ namespace DATH.Controllers.Quantri
                         ViewBag.tgbd = hd.ThoiGianBD;
                         if (excelfile.FileName.EndsWith("xls") || excelfile.FileName.EndsWith("xlsx"))
                         {
+                            int tong = 0;
                             string path = Server.MapPath("~/Excel/" + excelfile.FileName);
                             if (System.IO.File.Exists(path))
                             {
@@ -110,14 +111,22 @@ namespace DATH.Controllers.Quantri
                                 {
                                     if (ModelState.IsValid)
                                     {
+                                        HoatDong hdz = db.HoatDongs.Where(n => n.IdHoatDong == id).SingleOrDefault();
+                                        hdz.SLDaDangKi = hdz.SLDaDangKi + listds.Count();
+                                        UpdateModel(hdz);
+                                        db.SubmitChanges();
+
                                         foreach (var c in lstdk)
                                         {
                                             foreach (var d in listds)
                                             {
                                                 List<DangKiThamGiaHD> lstdk2 = db.DangKiThamGiaHDs.Where(n => (n.IdInfo == d.IdInfo) && (n.IdHoatDong == id)).OrderBy(n => n.IdDangKiHD).ToList();
+                                                
                                                 if (lstdk2.Count == 0)
                                                 {
+                                                    d.LayCn = false;
                                                     db.DangKiThamGiaHDs.InsertOnSubmit(d);
+                                                    UpdateModel(hdz);
                                                     db.SubmitChanges();
                                                 }
                                                 foreach (var y in lstdk2)
@@ -129,6 +138,7 @@ namespace DATH.Controllers.Quantri
                                                         {
                                                             t.TrangThai = d.TrangThai;
                                                             t.XoaTam = d.XoaTam;
+                                                            t.LayCn = false;
                                                             UpdateModel(t);
                                                             db.SubmitChanges();
                                                         }

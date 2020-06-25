@@ -32,6 +32,14 @@ else if (ViewBag.tgbd < DateTime.Now && ViewBag.tgkt > DateTime.Now)
 
 @if (ViewBag.tgkt < DateTime.Now)
 {
+    using (Html.BeginForm("Index", "DsSinhvienTheohd", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        <p>Nhập danh sách sinh viên tham gia</p>
+        <p style="color:red">@ViewBag.Error</p>
+        <input style="margin-top:-5px" type="file" name="excelfile" />
+        <input style="margin-top:5px" type="submit" value="Import" />
+    }
+    <br />
     if (ViewBag.bg == null)
     {
         using (Html.BeginForm("Index", "DsSinhvienTheohd", FormMethod.Post, new { @enctype = "multipart/form-data" }))
