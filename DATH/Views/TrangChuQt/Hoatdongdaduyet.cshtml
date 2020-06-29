@@ -25,15 +25,15 @@
     </div>
 </div>
 
-@using (Html.BeginForm("Sapxep", "TrangChuQt", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+@*@using (Html.BeginForm("Sapxep", "TrangChuQt", FormMethod.Post, new { @enctype = "multipart/form-data" }))
 {
-    @*@Html.DropDownList("sapxep")*@
+    
     <select name="sapxep">
         <option value="1">Mới đăng</option>
         <option value="2">Sắp diễn ra</option>
     </select>
     <input type="submit" value="Xem" />
-}
+}*@
 
 @foreach (var item in Model)
 {

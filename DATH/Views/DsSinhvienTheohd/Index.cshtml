@@ -148,6 +148,10 @@ else
                                             }
                                             else if (item.HoatDong.ThoiGianKT < DateTime.Now)
                                             {
+                                                <p style="cursor:pointer" onclick="Xacnhan(@item.IdDangKiHD)">@Html.CheckBox("t", true)</p>
+                                            }
+                                            else if (item.HoatDong.ThoiGianKT < DateTime.Now)
+                                            {
                                                 <p style="cursor:pointer">@Html.CheckBox("t", true)</p>
                                             }
                                             else
@@ -157,6 +161,10 @@ else
                                         else if (item.TrangThai == false)
                                         {
                                             if (item.HoatDong.ThoiGianBD <= DateTime.Now && item.HoatDong.ThoiGianKT >= DateTime.Now)
+                                            {
+                                                <p style="cursor:pointer" onclick="Xacnhan(@item.IdDangKiHD)">@Html.CheckBox("f", false)</p>
+                                            }
+                                            else if (item.HoatDong.ThoiGianKT < DateTime.Now)
                                             {
                                                 <p style="cursor:pointer" onclick="Xacnhan(@item.IdDangKiHD)">@Html.CheckBox("f", false)</p>
                                             }
